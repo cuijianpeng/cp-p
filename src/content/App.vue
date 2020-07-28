@@ -164,7 +164,7 @@ export default {
       height: 180px;
       width: 180px;
       line-height: 180px;
-      font-size: 14px;
+      font-size: 24px;
     }
     .elCardContentDetail{
       min-width: 400px;
