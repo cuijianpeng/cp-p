@@ -51,12 +51,13 @@ const config = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|ico)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 100000
-          }
-        }]
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+          outputPath: '/images/',
+          emitFile: true,
+          esModule: false,
+        },
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
