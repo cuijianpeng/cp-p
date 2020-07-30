@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    if (location.host == 'www.baidu.com') {
+    if (location.host == 'mp.weixin.qq.com') {
         console.log('这是content script!');
         var panel = document.createElement('div');
-        panel.id = 'app';
+        panel.id = 'chrome-plugin-insertPage';
         // panel.innerHTML = `<h2></h2>`;
         document.body.insertBefore(panel,document.body.childNodes[0])
     }

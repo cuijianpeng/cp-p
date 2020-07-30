@@ -15,12 +15,12 @@
     "newtab": "content/content.html"
   },
   "content_scripts": [{
-      "matches": ["https://www.baidu-888.com/*"],
+      "matches": ["https://mp.weixin.qq.com/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://www.baidu-888.com/*"],
+      "matches": ["https://mp.weixin.qq.com/*"],
       "css": ["content/content.css"],
       "js": ["content/content.js"],
       "run_at": "document_end"
