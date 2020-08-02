@@ -53,74 +53,95 @@
       </div>
     </el-header>
     <el-main>
-      <div class="">
 
-        <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%;">
-          <el-steps :active="2" align-center finish-status="success">
-            <el-step title="新手任务"></el-step>
-            <el-step title="青铜任务"></el-step>
-            <el-step title="白银任务"></el-step>
-            <el-step title="黄金任务"></el-step>
-          </el-steps>
+      <div style="width: 80%; margin: 0 auto;">
+        <div>
+          <div style="float: right;">
+            <el-button type="text" @click="visibleStatus.sidebar = true">查看任务讲解</el-button>
+            <el-button type="text" @click="visibleStatus.mainbar = !visibleStatus.mainbar">{{visibleStatus.mainbar? '收起': '展开'}}任务面板</el-button>
+          </div>
+          <div style="padding-top: 12px;">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item>当前任务</el-breadcrumb-item>
+              <el-breadcrumb-item>青铜任务</el-breadcrumb-item>
+              <el-breadcrumb-item>设置自动回复</el-breadcrumb-item>
+              <el-breadcrumb-item>收到消息自回复</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          
         </div>
-        <div class="cardlist">
-          <el-card shadow="hover">
-            <div class="elCardContent">
-              自定义菜单
-            </div>
-          </el-card>
-          <el-card shadow="hover">
+        
+        
+        <div v-if="visibleStatus.mainbar">
 
-            <div slot="header" class="clearfix">
-              <div style="text-align: left;">
-                <span>设置自动回复</span>
-                <el-button size="mini" style="float: right; padding: 3px 0" type="text">关闭</el-button>
+          <div style="margin: 0 auto 24px; padding: 48px 0 24px;">
+            <el-steps :active="2" align-center finish-status="success">
+              <el-step title="新手任务"></el-step>
+              <el-step title="青铜任务"></el-step>
+              <el-step title="白银任务"></el-step>
+              <el-step title="黄金任务"></el-step>
+            </el-steps>
+          </div>
+          <div class="cardlist">
+            <el-card shadow="hover">
+              <div class="elCardContent">
+                自定义菜单
               </div>
-            </div>
-            <div class="elCardContentDetail">
-              <div style="">
-                <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
-                  <div style="float: right;">
-                    <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                    <el-button size="mini">已完成</el-button>
-                  </div>
-                  被关注自动回复
-                  <div style="font-size: 12px; color: #bfbfbf;">已有8940个学员完成此任务</div>
-                </div>
-                <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
-                  <div style="float: right;">
-                    <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                    <el-button size="mini">已完成</el-button>
-                  </div>
-                  收到消息自动回复
-                  <div style="font-size: 12px; color: #bfbfbf;">已有7940个学员完成此任务</div>
-                </div>
-                <div style="clear: both; height: inherit; overflow: hidden;">
-                  <div style="float: right;">
-                    <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                    <el-button size="mini">已完成</el-button>
-                  </div>
-                  关键词自动回复
-                  <div style="font-size: 12px; color: #bfbfbf;">已有5940个学员完成此任务</div>
+            </el-card>
+            <el-card shadow="hover">
+
+              <div slot="header" class="clearfix">
+                <div style="text-align: left;">
+                  <span>设置自动回复</span>
+                  <el-button size="mini" style="float: right; padding: 3px 0" type="text">关闭</el-button>
                 </div>
               </div>
-            </div>
-          </el-card>
-          <el-card shadow="hover">
-            <div class="elCardContent">
-              发布一篇文章
-            </div>
-          </el-card>
-          <el-card shadow="hover">
-            <div class="elCardContent">
-              开启赞赏功能
-            </div>
-          </el-card>
-        </div>
-        <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%; text-align: center;">
-          <el-button type="primary" plain @click="submit">完成任务</el-button>
+              <div class="elCardContentDetail">
+                <div style="">
+                  <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
+                    <div style="float: right;">
+                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
+                      <el-button size="mini">已完成</el-button>
+                    </div>
+                    被关注自动回复
+                    <div style="font-size: 12px; color: #bfbfbf;">已有8940个学员完成此任务</div>
+                  </div>
+                  <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
+                    <div style="float: right;">
+                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
+                      <el-button size="mini">已完成</el-button>
+                    </div>
+                    收到消息自动回复
+                    <div style="font-size: 12px; color: #bfbfbf;">已有7940个学员完成此任务</div>
+                  </div>
+                  <div style="clear: both; height: inherit; overflow: hidden;">
+                    <div style="float: right;">
+                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
+                      <el-button size="mini">已完成</el-button>
+                    </div>
+                    关键词自动回复
+                    <div style="font-size: 12px; color: #bfbfbf;">已有5940个学员完成此任务</div>
+                  </div>
+                </div>
+              </div>
+            </el-card>
+            <el-card shadow="hover">
+              <div class="elCardContent">
+                发布一篇文章
+              </div>
+            </el-card>
+            <el-card shadow="hover">
+              <div class="elCardContent">
+                开启赞赏功能
+              </div>
+            </el-card>
+          </div>
+          <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%; text-align: center;">
+            <el-button type="primary" plain @click="submit">完成任务</el-button>
+          </div>
         </div>
       </div>
+      
     </el-main>
   </el-container>
 
@@ -130,6 +151,8 @@
 
 <script>
 import sideBar from "./components/sideBar.vue";
+import {sendRequest,searchParse} from "./utils.js"
+
 export default {
   data() {
     return {
@@ -137,9 +160,13 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       visibleStatus: {
-        sidebar: false
+        sidebar: false,
+        mainbar: true,
       }
     };
+  },
+  created(){
+    console.log(searchParse())
   },
   components: {
     sideBar
@@ -149,10 +176,35 @@ export default {
       console.log(key, keyPath);
     },
     submit() {
-      this.$alert("完成任务", "消息", {
-        confirmButtonText: "确定",
-        callback: action => {}
-      });
+      var that = this;
+
+      sendRequest({
+        type: 'api', 
+        info: {
+          url: '/backend/Task/save',
+          method: 'get',
+          data: {}
+        }
+      },function(res) {
+
+        console.log(res)
+        if (/^0$/gi.test(res.code)) {
+
+          that.$alert("完成任务", "消息", {
+            confirmButtonText: "确定",
+            callback: action => {}
+          });
+
+          return;
+
+        }
+
+        that.$alert(res.msg, "消息", {
+          confirmButtonText: "确定",
+          callback: action => {}
+        });
+
+      });      
     }
   }
 };

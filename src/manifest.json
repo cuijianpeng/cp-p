@@ -1,6 +1,6 @@
 {
-  "name": "chrome-tab-page",
-  "description": "A Vue.js web extension",
+  "name": "新媒体营销实训平台",
+  "description": "新媒体营销实训平台",
   "version": null,
   "manifest_version": 2,
   "icons": {
@@ -8,7 +8,8 @@
     "128": "icons/icon_128.png"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "browser_action": {
+  "page_action": {
+    "default_icon": "icons/icon_128.png",
     "default_title": "new-tab-page"
   },
   "chrome_url_overrides": {
@@ -25,6 +26,9 @@
       "js": ["content/content.js"],
       "run_at": "document_end"
     }
+  ],
+  "permissions": [
+    "http://45.63.123.94/"
   ],
   "background": {
     "scripts": [
