@@ -166,7 +166,7 @@ export default {
     };
   },
   created(){
-    console.log(searchParse())
+    // console.log(searchParse())
   },
   components: {
     sideBar
