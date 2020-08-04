@@ -1,25 +1,23 @@
-import axios from './content/request.js'
+import {request, baseUrl} from './content/request.js'
 
+var _connects = {};
+chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
 
-
-
-
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-
-    if (/api/gi.test(request.type)) {
-        axios(request.info).then(res => {
+    if (/api/gi.test(req.type)) {
+        console.log(req.type,req.method, req)
+        request(req.info).then(res => {
             sendResponse(res.data)
         })
         return;
     }
-
-    if (/cookie/gi.test(request.type)) {
-        chrome.cookies.getAll({
-            url: request.info.url
-        }, function(res) {
-            console.log(res)
-            sendResponse(res)
-        })
+    
+    if (/cookie/gi.test(req.type)) {
+        console.log(req.type, req.method, req)
+        if (/get/gi.test(req.method)) {
+            chrome.cookies.get(req.info, function(res){
+                sendResponse(res)
+            })
+        }
         return;
     }
 
@@ -28,9 +26,33 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.cookies.onChanged.addListener(function(changeInfo) {
-    console.log(9090990, changeInfo)
+    
+    if (baseUrl.indexOf(changeInfo.cookie.domain) >= 0) {
+        console.log('onChanged', changeInfo.cookie.domain, changeInfo)
+        if (Object.keys(_connects).length) {
+            Object.keys(_connects).forEach(function(v,i){
+                _connects[v].postMessage(changeInfo)
+            })
+        }
+    }
 });
 
-setTimeout(function(){
-    chrome.cookies.set({url:'https://mp.weixin.qq.com/cgi-bin/bizlogin?action=validate&lang=zh_CN&account=2698646143%40qq.com&token=',name: 'x111', value: '1111'})
-},5000)
+chrome.extension.onConnect.addListener(function(port) {
+
+
+    if (Object.keys(_connects).indexOf(port.name) < 0) {
+        _connects[port.name] = port;
+    }
+
+    port.onMessage.addListener(function(msg) {
+        console.log('onConnect', msg)
+    });
+
+    port.onDisconnect.addListener(function(port){
+        console.log('onDisconnect',port)
+
+        if (Object.keys(_connects).indexOf(port.name) >= 0) {
+            delete _connects[port.name];
+        }
+    })
+});

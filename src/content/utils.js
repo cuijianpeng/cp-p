@@ -1,4 +1,4 @@
-import axios from './request.js'
+import {baseUrl} from './request.js'
 
 function searchParse() {
     var resultObj = {};
@@ -17,17 +17,17 @@ function searchParse() {
     return resultObj;
 }
 
+function getCookie(obj,cb){
+    console.log(obj)
+    chrome.extension.sendRequest(obj, cb);
+}
+
 function sendRequest(obj, cb) {
-    var _searchObj = searchParse();
-    if (_searchObj['mtk']) {
-        obj.info.headers = {};
-        obj.info.headers['mtk'] = _searchObj['mtk'];
-        chrome.extension.sendRequest(obj, cb);
-        return;
-    }
-    cb({})
+    obj.info.url = baseUrl + obj.info.url;
+    chrome.extension.sendRequest(obj, cb);
 }
 export {
     searchParse,
-    sendRequest
+    sendRequest,
+    getCookie
 }

@@ -16,7 +16,7 @@
     "newtab": "content/content.html"
   },
   "content_scripts": [{
-      "matches": ["https://mp.weixin.qq.com/*", "http://45.63.123.94/*"],
+      "matches": ["https://mp.weixin.qq.com/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     },

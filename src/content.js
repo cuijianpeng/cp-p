@@ -27,20 +27,20 @@ function injectCustomJs(jsPath) {
 }
 
 
-chrome.extension.sendRequest({
-    type: 'cookie',
-    info: {
-        url: "https://mp.weixin.qq.com/cgi-bin/bizlogin?action=validate&lang=zh_CN&account=2698646143%40qq.com&token="
-    }
-}, function(res) {
-    console.log('weixin', res)
-});
+// chrome.extension.sendRequest({
+//     type: 'cookie',
+//     info: {
+//         url: "https://mp.weixin.qq.com/cgi-bin/bizlogin?action=validate&lang=zh_CN&account=2698646143%40qq.com&token="
+//     }
+// }, function(res) {
+//     console.log('weixin', res)
+// });
 
-chrome.extension.sendRequest({
-    type: 'cookie',
-    info: {
-        url: "http://45.63.123.94/backend/Moodle/login"
-    }
-}, function(res) {
-    console.log('45.63.123.94', res)
-});
+// chrome.extension.sendRequest({
+//     type: 'cookie',
+//     info: {
+//         url: "http://45.63.123.94/backend/Moodle/login"
+//     }
+// }, function(res) {
+//     console.log('45.63.123.94', res)
+// });
