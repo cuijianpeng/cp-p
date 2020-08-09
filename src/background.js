@@ -1,21 +1,58 @@
-import axios from './content/request.js'
+import {request, baseUrl} from './content/request.js'
 
+var _connects = {};
+chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
 
-
-
-
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-
-
-    if (/api/gi.test(request.type)) {
-
-    	axios(request.info).then(res=>{
-    		sendResponse(res.data)
-    	})
-
-    	return;
+    if (/api/gi.test(req.type)) {
+        console.log(req.type,req.method, req)
+        request(req.info).then(res => {
+            sendResponse(res.data)
+        })
+        return;
+    }
+    
+    if (/cookie/gi.test(req.type)) {
+        console.log(req.type, req.method, req)
+        if (/get/gi.test(req.method)) {
+            chrome.cookies.get(req.info, function(res){
+                sendResponse(res)
+            })
+        }
+        return;
     }
 
-
     sendResponse({})
+
+});
+
+chrome.cookies.onChanged.addListener(function(changeInfo) {
+    
+    if (baseUrl.indexOf(changeInfo.cookie.domain) >= 0) {
+        console.log('onChanged', changeInfo.cookie.domain, changeInfo)
+        if (Object.keys(_connects).length) {
+            Object.keys(_connects).forEach(function(v,i){
+                _connects[v].postMessage(changeInfo)
+            })
+        }
+    }
+});
+
+chrome.extension.onConnect.addListener(function(port) {
+
+
+    if (Object.keys(_connects).indexOf(port.name) < 0) {
+        _connects[port.name] = port;
+    }
+
+    port.onMessage.addListener(function(msg) {
+        console.log('onConnect', msg)
+    });
+
+    port.onDisconnect.addListener(function(port){
+        console.log('onDisconnect',port)
+
+        if (Object.keys(_connects).indexOf(port.name) >= 0) {
+            delete _connects[port.name];
+        }
+    })
 });

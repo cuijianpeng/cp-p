@@ -1,5 +1,9 @@
 import axios from 'axios'
-const instance = axios.create({
-    baseURL: 'http://45.63.123.94/'
+const baseUrl = 'http://45.63.123.94/';
+const request = axios.create({
+    baseUrl: baseUrl
 });
-export default instance;
+export {
+	request,
+	baseUrl
+}

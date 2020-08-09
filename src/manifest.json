@@ -28,7 +28,9 @@
     }
   ],
   "permissions": [
-    "http://45.63.123.94/"
+    "cookies",
+    "http://45.63.123.94/*",
+    "https://mp.weixin.qq.com/*"
   ],
   "background": {
     "scripts": [

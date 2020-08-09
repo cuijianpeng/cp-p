@@ -1,6 +1,6 @@
 <template>
 <div class="chrome-plugin-insertPage">
-  <el-container>
+  <el-container v-if="visibleStatus.defaultPage">
     <el-header>
       <div class="el-header-content">
         <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
@@ -150,28 +150,64 @@
 </template>
 
 <script>
+import {baseUrl} from './request.js'
 import sideBar from "./components/sideBar.vue";
-import {sendRequest,searchParse} from "./utils.js"
+import {sendRequest,searchParse,getCookie} from "./utils.js"
 
 export default {
   data() {
     return {
+      mtk: '',
       activeName: "1",
       activeIndex: "1",
       activeIndex2: "1",
       visibleStatus: {
+        defaultPage: false,
         sidebar: false,
         mainbar: true,
       }
     };
   },
   created(){
-    console.log(searchParse())
+    this.refresh();
+    this.listener()
   },
   components: {
     sideBar
   },
   methods: {
+    listener(){
+      var that = this,
+        port = chrome.extension.connect({name: "kill"});
+      port.postMessage({joke: "Knock knock"});
+      port.onMessage.addListener(function(msg) {
+        if (/explicit|overwrite/gi.test(msg.cause)) {
+
+            if (/mtk/gi.test(msg.cookie.name)) {
+              that.refresh()
+            }
+        }
+      });
+    },
+    refresh(){
+      var that = this,
+        _query = searchParse();
+      if (_query.token && _query.token.length) {
+        getCookie({
+            type: 'cookie',
+            method: 'get',
+            info: {
+              url: baseUrl + 'backend/moodle',
+              name: 'mtk'
+            }
+          },function(res) {
+            if (res && res.value.length) {
+              that.mtk = res.value;
+              that.visibleStatus.defaultPage = !!1
+            }
+        }); 
+      }
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -179,10 +215,13 @@ export default {
       var that = this;
 
       sendRequest({
-        type: 'api', 
+        type: 'api',
         info: {
-          url: '/backend/Task/save',
+          url: 'backend/Task/save',
           method: 'get',
+          headers:{
+            mtk: that.mtk
+          },
           data: {}
         }
       },function(res) {
