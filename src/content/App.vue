@@ -157,7 +157,10 @@ import {sendRequest,searchParse,getCookie} from "./utils.js"
 export default {
   data() {
     return {
+      // start
+      userInfo:{},
       mtk: '',
+      // end
       activeName: "1",
       activeIndex: "1",
       activeIndex2: "1",
@@ -171,6 +174,7 @@ export default {
   created(){
     this.refresh();
     this.listener()
+    this.checkUser({value: 111})
   },
   components: {
     sideBar
@@ -202,11 +206,62 @@ export default {
             }
           },function(res) {
             if (res && res.value.length) {
-              that.mtk = res.value;
-              that.visibleStatus.defaultPage = !!1
+              that.checkUser(res)
             }
         }); 
       }
+    },
+    checkUser(res){
+
+      var that = this;
+
+      that.mtk = res.value;
+
+      getCookie({
+        type: 'cookie',
+        method: 'get',
+        info: {
+          url: window.location.href,
+          name: 'xid'
+        }
+      },function(res) {
+            
+        if (res && res.value.length) {
+  
+          var _obj = {
+            mtk: that.mtk,
+            fromHost: window.location.host,
+            fromHostKey: res.value
+          };
+
+          sendRequest({
+            type: 'api',
+            info: {
+              url: 'backend/Moodle/checkMTK',
+              method: 'get',
+              headers:_obj,
+              data: {}
+            }
+          },function(res) {
+
+            if (/^0$/gi.test(res.code)) {
+              that.userInfo = res.info;
+              that.visibleStatus.defaultPage = !!1
+              return;
+            }
+
+            that.$alert(res.msg, "消息", {
+              confirmButtonText: "确定",
+              callback: action => {}
+            });
+            
+          });
+
+        }
+
+      });       
+
+      
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
