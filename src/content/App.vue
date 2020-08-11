@@ -25,7 +25,7 @@
                   </ul>
                 </div>
               </div>
-              <el-avatar size="medium" shape="square" slot="reference" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+              <el-avatar size="medium" shape="square" slot="reference">{{userInfo.username}}</el-avatar>
             </el-popover>
           </el-menu-item>
           <el-menu-item disabled>
@@ -74,22 +74,26 @@
         
         <div v-if="visibleStatus.mainbar">
 
-          <div style="margin: 0 auto 24px; padding: 48px 0 24px;">
+          <!-- <div style="margin: 0 auto 24px; padding: 48px 0 24px;">
             <el-steps :active="2" align-center finish-status="success">
               <el-step title="新手任务"></el-step>
               <el-step title="青铜任务"></el-step>
               <el-step title="白银任务"></el-step>
               <el-step title="黄金任务"></el-step>
             </el-steps>
-          </div>
+          </div> -->
           <div class="cardlist">
-            <el-card shadow="hover">
+            <el-card shadow="hover" v-for="(item,index) in taskList" :key="index">
+              <div :class="['elCardContent','elCardContent-' + item.status, Object.keys(sideBarData).length && sideBarData.id == item.id?'elCardContent-active':'']" @click="showSideBar(item)">
+                {{item.name}}
+              </div>
+            </el-card>
+            <!-- <el-card shadow="hover">
               <div class="elCardContent">
                 自定义菜单
               </div>
             </el-card>
             <el-card shadow="hover">
-
               <div slot="header" class="clearfix">
                 <div style="text-align: left;">
                   <span>设置自动回复</span>
@@ -124,19 +128,9 @@
                   </div>
                 </div>
               </div>
-            </el-card>
-            <el-card shadow="hover">
-              <div class="elCardContent">
-                发布一篇文章
-              </div>
-            </el-card>
-            <el-card shadow="hover">
-              <div class="elCardContent">
-                开启赞赏功能
-              </div>
-            </el-card>
+            </el-card> -->
           </div>
-          <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%; text-align: center;">
+          <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%; text-align: center;" v-if="Object.keys(sideBarData).length">
             <el-button type="primary" plain @click="submit">完成任务</el-button>
           </div>
         </div>
@@ -145,7 +139,11 @@
     </el-main>
   </el-container>
 
-  <sideBar :visibleStatus="visibleStatus" v-if="visibleStatus.sidebar" />
+  <sideBar 
+    :visibleStatus="visibleStatus" 
+    :sideBarData="sideBarData" 
+    @sideBarCloseHandler="sideBarCloseHandler"
+    v-if="visibleStatus.sidebar" />
 </div>
 </template>
 
@@ -160,6 +158,9 @@ export default {
       // start
       userInfo:{},
       mtk: '',
+      fromHostKey: '',
+      taskList: [],
+      sideBarData: {},
       // end
       activeName: "1",
       activeIndex: "1",
@@ -173,13 +174,30 @@ export default {
   },
   created(){
     this.refresh();
-    this.listener()
-    this.checkUser({value: 111})
+    this.listener();
   },
   components: {
     sideBar
   },
   methods: {
+    sideBarCloseHandler(obj){
+      this.visibleStatus.sidebar = !!0
+      this.sideBarData = {};
+    },
+    showSideBar(r){
+
+      if (/2/gi.test(r.status)) {
+
+        that.$alert('该任务已完成.', "消息", {
+          confirmButtonText: "确定",
+          callback: action => {}
+        });
+
+        return;
+      }
+      this.sideBarData = r;
+      this.visibleStatus.sidebar = true;
+    },
     listener(){
       var that = this,
         port = chrome.extension.connect({name: "kill"});
@@ -222,7 +240,7 @@ export default {
         method: 'get',
         info: {
           url: window.location.href,
-          name: 'xid'
+          name: 'slave_user'
         }
       },function(res) {
             
@@ -233,6 +251,8 @@ export default {
             fromHost: window.location.host,
             fromHostKey: res.value
           };
+
+          that.fromHostKey = res.value;
 
           sendRequest({
             type: 'api',
@@ -245,6 +265,7 @@ export default {
           },function(res) {
 
             if (/^0$/gi.test(res.code)) {
+              that.getTaskList();
               that.userInfo = res.info;
               that.visibleStatus.defaultPage = !!1
               return;
@@ -260,30 +281,58 @@ export default {
         }
 
       });       
+    },
+    getTaskList(){
+      var that = this;
+      var _obj = {
+        mtk: that.mtk,
+        fromHost: window.location.host,
+        fromHostKey: that.fromHostKey
+      };
 
-      
+      sendRequest({
+        type: 'api',
+        info: {
+          url: 'backend/task/get_list',
+          method: 'get',
+          headers:_obj,
+          params: {
+            plat_account_id: that.fromHostKey
+          }
+        }
+      },function(res) {
+        that.taskList = res.data;
+      });
+
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
     submit() {
       var that = this;
-
+      var _obj = {
+        mtk: that.mtk,
+        fromHost: window.location.host,
+        fromHostKey: that.fromHostKey
+      };
       sendRequest({
         type: 'api',
         info: {
-          url: 'backend/Task/save',
+          url: 'backend/task/save_user_task',
           method: 'get',
-          headers:{
-            mtk: that.mtk
-          },
-          data: {}
+          headers: _obj,
+          params: {
+            plat_account_id: that.fromHostKey,
+            task_id: that.sideBarData.id,
+            status: 2
+          }
         }
       },function(res) {
 
         console.log(res)
         if (/^0$/gi.test(res.code)) {
-
+          that.getTaskList();
+          that.sideBarCloseHandler();
           that.$alert("完成任务", "消息", {
             confirmButtonText: "确定",
             callback: action => {}
@@ -320,12 +369,23 @@ export default {
     }
     .cardlist {
         text-align: center;
-
+        padding-top: 24px;
         .elCardContent {
             height: 180px;
             width: 180px;
             line-height: 180px;
-            font-size: 24px;
+            font-size: 20px;
+            cursor: pointer;
+            &-0{}
+            &-1{
+              color: #409EFF;
+            }
+            &-2{
+              color: #67C23A;
+            }
+            &-active{
+              background: rgb(236, 245, 255);
+            }
         }
         .elCardContentDetail {
             min-width: 400px;
@@ -334,7 +394,7 @@ export default {
         }
         .el-card {
             display: inline-block;
-            margin: 0 12px;
+            margin: 12px 12px;
         }
     }
 

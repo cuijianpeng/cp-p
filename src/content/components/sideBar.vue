@@ -3,12 +3,12 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>任务讲解</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="visibleStatus.sidebar = !!0">关闭</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="dialogClose">关闭</el-button>
       </div>
       <div>
-          <el-input placeholder="搜索任务讲解" />
+          <div v-html="sideBarData.detail"></div>
       </div>
-      <div>
+      <!-- <div>
           <ul>
               <li>收到消息自动回复</li>
               <li>1.准备好关注回复文字，图片</li>
@@ -27,7 +27,7 @@
               <li>关键词自动回复</li>
               <li>被关注自动回复</li>
           </ul>
-      </div>
+      </div> -->
     </el-card>
   </div>
 </template>
@@ -37,7 +37,13 @@ export default {
   data() {
     return {};
   },
-  props:['visibleStatus']
+  props:['visibleStatus', 'sideBarData', 'sideBarCloseHandler'],
+  methods:{
+    dialogClose(){
+      this.visibleStatus.sidebar = !!0
+      this.$emit('sideBarCloseHandler');
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

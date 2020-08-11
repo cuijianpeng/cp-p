@@ -4,7 +4,7 @@ var _connects = {};
 chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
 
     if (/api/gi.test(req.type)) {
-        console.log(req.type,req.method, req)
+        console.log(req.type, req.info.method, req.info.url, req)
         request(req.info).then(res => {
             sendResponse(res.data)
         })
