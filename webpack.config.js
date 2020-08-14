@@ -18,7 +18,8 @@ const config = {
     'content': './content.js',
     'popup/popup': './popup/popup.js',
     'tab/tab': './tab/tab.js',
-    'content/content': './content/content.js'
+    'content/content': './content/content.js',
+    'cms/content': './cms/content.js'
   },
   output: {
     path: __dirname + '/dist',
@@ -96,6 +97,11 @@ const config = {
       {
         from: 'content/content.html',
         to: 'content/content.html',
+        transform: transformHtml
+      },
+      {
+        from: 'cms/content.html',
+        to: 'cms/content.html',
         transform: transformHtml
       },
       {

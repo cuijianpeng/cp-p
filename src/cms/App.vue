@@ -28,7 +28,7 @@
               <el-avatar size="medium" shape="square" slot="reference">{{userInfo.username}}</el-avatar>
             </el-popover>
           </el-menu-item>
-          <el-menu-item disabled>
+          <el-menu-item>
             LOGO:
             新媒体营销实训平台
           </el-menu-item>
@@ -176,7 +176,7 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       visibleStatus: {
-        defaultPage: false,
+        defaultPage: true,
         sidebar: false,
         mainbar: true,
       }
@@ -184,7 +184,6 @@ export default {
   },
   created(){
     this.refresh();
-    this.listener();
   },
   components: {
     sideBar
@@ -220,20 +219,6 @@ export default {
       }
       this.sideBarData = r;
       this.visibleStatus.sidebar = true;
-    },
-    listener(){
-      var that = this,
-          port = chrome.extension.connect({
-            name: [window.location.host, that.headers['fromHostToken'], new Date().valueOf()].join('-')
-          });
-
-      port.onMessage.addListener(function(msg) {
-        if (/explicit|overwrite/gi.test(msg.cause)) {
-            if (/mtk/gi.test(msg.cookie.name)) {
-              that.refresh()
-            }
-        }
-      });
     },
     refresh(){
       var that = this,

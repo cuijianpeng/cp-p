@@ -14,9 +14,17 @@ chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
     if (/cookie/gi.test(req.type)) {
         console.log(req.type, req.method, req)
         if (/get/gi.test(req.method)) {
-            chrome.cookies.get(req.info, function(res){
-                sendResponse(res)
-            })
+
+            if (req.info.name) {
+                chrome.cookies.get(req.info, function(res){
+                    sendResponse(res)
+                })
+            }else{
+                chrome.cookies.getAll(req.info, function(res){
+                    sendResponse(res)
+                })
+            }
+            
         }
         return;
     }
@@ -43,14 +51,15 @@ chrome.extension.onConnect.addListener(function(port) {
     if (Object.keys(_connects).indexOf(port.name) < 0) {
         _connects[port.name] = port;
     }
-
+    console.log(_connects)
     port.onMessage.addListener(function(msg) {
         console.log('onConnect', msg)
     });
 
     port.onDisconnect.addListener(function(port){
         console.log('onDisconnect',port)
-
+        // 取断开时 长链的 host,token,key
+        // chrome.extension.sendRequest(obj, cb);
         if (Object.keys(_connects).indexOf(port.name) >= 0) {
             delete _connects[port.name];
         }
