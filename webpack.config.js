@@ -18,8 +18,7 @@ const config = {
     'content': './content.js',
     'popup/popup': './popup/popup.js',
     'tab/tab': './tab/tab.js',
-    'content/content': './content/content.js',
-    'cms/content': './cms/content.js'
+    'content/content': './content/content.js'
   },
   output: {
     path: __dirname + '/dist',
