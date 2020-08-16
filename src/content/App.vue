@@ -172,9 +172,7 @@ export default {
       taskList: [],
       sideBarData: {},
       // end
-      activeName: "1",
       activeIndex: "1",
-      activeIndex2: "1",
       visibleStatus: {
         defaultPage: false,
         sidebar: false,
@@ -211,7 +209,7 @@ export default {
 
       if (/2/gi.test(r.status)) {
 
-        that.$alert('该任务已完成.', "消息", {
+        this.$alert('该任务已完成.', "消息", {
           confirmButtonText: "确定",
           callback: action => {}
         });
@@ -334,6 +332,14 @@ export default {
         }
       },function(res) {
         that.taskList = res.data;
+        console.log(res)
+        var _href = window.location.origin + window.location.pathname;
+        var _reg = new RegExp('^' + _href, 'gi')
+        res.data.forEach(function(v,i){
+          if(_reg.test(v.url)){
+            that.sideBarData = v;
+          }
+        })
       });
 
     },
