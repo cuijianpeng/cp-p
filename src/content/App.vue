@@ -195,7 +195,7 @@ export default {
         this.headers['mtk'] = this.cmsCookies['mtk']
       }
       if (Object.keys(this.fromHostCookies).length) {
-        this.headers['fromHost'] = window.location.host
+        this.headers['fromHost'] = window.location.origin
         this.headers['fromHostKey'] = this.fromHostCookies['slave_user']
         this.headers['fromHostEmail'] = ''
         this.headers['fromHostAvatar'] = ''
@@ -223,9 +223,17 @@ export default {
     },
     listener(){
       var that = this,
-          port = chrome.extension.connect({
-            name: [window.location.host, that.headers['fromHostToken'], new Date().valueOf()].join('-')
-          });
+          _portName = [window.location.origin],
+          port;
+
+      if (that.headers['fromHostToken']) {
+        _portName.push(that.headers['fromHostToken'])
+      }
+      _portName.push(new Date().valueOf())
+
+      port = chrome.extension.connect({
+        name: _portName.join('-')
+      });
 
       port.onMessage.addListener(function(msg) {
         if (/explicit|overwrite/gi.test(msg.cause)) {

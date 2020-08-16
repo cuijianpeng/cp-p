@@ -58,9 +58,52 @@ chrome.extension.onConnect.addListener(function(port) {
 
     port.onDisconnect.addListener(function(port){
         console.log('onDisconnect',port)
+        var _portNameArray = port.name.split('-')
         // 取断开时 长链的 host,token,key
         // chrome.extension.sendRequest(obj, cb);
         if (Object.keys(_connects).indexOf(port.name) >= 0) {
+
+            if (_portNameArray.length == 3) {
+
+                chrome.cookies.getAll({url: baseUrl + 'backend/moodle'}, function(res){
+                    var _cookies = {}
+                    if (res && res.length) {
+                      res.forEach(function(v,i){
+                        _cookies[v.name] = v.value;
+                      })
+                    }
+
+                    if (_cookies['mtk']) {
+                        request({
+                            url: baseUrl + 'backend/Moodle/platLogoff',
+                            method: 'get',
+                            headers: {
+                                mtk: _cookies['mtk']?_cookies['mtk']: '',
+                                fromHost: _portNameArray[0],
+                                fromHostKey: _cookies['slave_user']?_cookies['slave_user']: '',
+                                fromHostEmail: '',
+                                fromHostAvatar: '',
+                                fromHostNick: '',
+                                fromHostBroken: 1,
+                                fromHostToken: _portNameArray[1],
+                            },
+                            data: {}
+                        }).then(res => {
+                            console.log(res)
+                            delete _connects[port.name];
+                        }) 
+
+                        return;
+                    }
+
+                    delete _connects[port.name];
+                    
+
+                })
+
+                return;
+            }
+
             delete _connects[port.name];
         }
     })
