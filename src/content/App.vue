@@ -54,25 +54,22 @@
     </el-header>
     <el-main>
 
-      <div style="width: 80%; margin: 0 auto;">
+      <div style="width: 80%; margin: 0 auto;" v-show="Object.keys(sideBarData).length">
         <div>
           <div style="float: right;">
             <el-button type="text" @click="visibleStatus.sidebar = true">查看任务讲解</el-button>
-            <el-button type="text" @click="visibleStatus.mainbar = !visibleStatus.mainbar">{{visibleStatus.mainbar? '收起': '展开'}}任务面板</el-button>
+            <el-button type="text" @click="showHideMainBar">{{visibleStatus.mainbar? '收起': '展开'}}任务面板</el-button>
           </div>
           <div style="padding-top: 12px;">
             <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item>当前任务</el-breadcrumb-item>
-              <el-breadcrumb-item>青铜任务</el-breadcrumb-item>
-              <el-breadcrumb-item>设置自动回复</el-breadcrumb-item>
-              <el-breadcrumb-item>收到消息自回复</el-breadcrumb-item>
+              <el-breadcrumb-item v-if="Object.keys(sideBarData).length">{{sideBarData.name}}</el-breadcrumb-item>
             </el-breadcrumb>
           </div>
           
         </div>
         
-        
-        <div v-if="visibleStatus.mainbar">
+        <div v-show="visibleStatus.mainbar">
 
           <!-- <div style="margin: 0 auto 24px; padding: 48px 0 24px;">
             <el-steps :active="2" align-center finish-status="success">
@@ -82,57 +79,23 @@
               <el-step title="黄金任务"></el-step>
             </el-steps>
           </div> -->
-          <div class="cardlist">
-            <el-card shadow="hover" v-for="(item,index) in taskList" :key="index">
-              <div :class="['elCardContent','elCardContent-' + item.status, Object.keys(sideBarData).length && sideBarData.id == item.id?'elCardContent-active':'']" @click="showSideBar(item)">
-                {{item.name}}
-              </div>
-            </el-card>
-            <!-- <el-card shadow="hover">
-              <div class="elCardContent">
-                自定义菜单
-              </div>
-            </el-card>
-            <el-card shadow="hover">
-              <div slot="header" class="clearfix">
-                <div style="text-align: left;">
-                  <span>设置自动回复</span>
-                  <el-button size="mini" style="float: right; padding: 3px 0" type="text">关闭</el-button>
-                </div>
-              </div>
-              <div class="elCardContentDetail">
-                <div style="">
-                  <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
-                    <div style="float: right;">
-                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                      <el-button size="mini">已完成</el-button>
-                    </div>
-                    被关注自动回复
-                    <div style="font-size: 12px; color: #bfbfbf;">已有8940个学员完成此任务</div>
-                  </div>
-                  <div style="clear: both; height: inherit; overflow: hidden; margin-bottom: 12px;">
-                    <div style="float: right;">
-                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                      <el-button size="mini">已完成</el-button>
-                    </div>
-                    收到消息自动回复
-                    <div style="font-size: 12px; color: #bfbfbf;">已有7940个学员完成此任务</div>
-                  </div>
-                  <div style="clear: both; height: inherit; overflow: hidden;">
-                    <div style="float: right;">
-                      <el-button size="mini" @click="visibleStatus.sidebar = true">任务讲解</el-button>
-                      <el-button size="mini">已完成</el-button>
-                    </div>
-                    关键词自动回复
-                    <div style="font-size: 12px; color: #bfbfbf;">已有5940个学员完成此任务</div>
+
+          <div style="position: relative; padding: 40px;">
+            <swiper ref="mySwiper" :options="swiperOptions">
+              <swiper-slide v-for="(item,index) in taskList" :key="index">
+                <div @click="swiperSlideTo(item,index)" style="margin: 24px auto 12px;">
+                  <div style="font-size: 14px;">{{[item.name,item.url.length?index:'null'].join('-')}}</div>
+                  <div>
+                    <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
+                    <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
                   </div>
                 </div>
-              </div>
-            </el-card> -->
+              </swiper-slide>              
+            </swiper>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
           </div>
-          <div style="margin: 0 auto 24px; padding: 48px 0; width: 80%; text-align: center;" v-if="Object.keys(sideBarData).length">
-            <el-button type="primary" plain @click="submit">完成任务</el-button>
-          </div>
+         
         </div>
       </div>
       
@@ -148,13 +111,37 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
 import {baseUrl} from './request.js'
 import sideBar from "./components/sideBar.vue";
 import {sendRequest,searchParse,getCookie} from "./utils.js"
+import 'swiper/css/swiper.css'
 
+var defaultThis;
 export default {
   data() {
     return {
+      swiperOptions: {
+        slidesPerView: 5,
+        spaceBetween: 40,
+        centeredSlides: true,
+        height: 240,
+        // loop: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        on:{
+          slideChangeTransitionEnd:function(){
+            console.log(defaultThis,this.activeIndex);
+            defaultThis.swiperSlideTo(defaultThis.taskList[this.activeIndex], this.activeIndex)
+          },
+        }
+      },
       // start
       cmsCookies:{},
       fromHostCookies:{},
@@ -170,6 +157,7 @@ export default {
       },
       userInfo:{},
       taskList: [],
+      sideBarDataIndex: 0,
       sideBarData: {},
       // end
       activeIndex: "1",
@@ -180,14 +168,40 @@ export default {
       }
     };
   },
+  computed:{
+    swiper: function () {
+      return this.$refs.mySwiper.$swiper
+    },
+  },
   created(){
+    defaultThis = this;
+    console.log(defaultThis)
     this.refresh();
     this.listener();
   },
   components: {
-    sideBar
+    sideBar,
+    Swiper,
+    SwiperSlide
   },
   methods: {
+    showHideMainBar(){
+      var that = this;
+      this.visibleStatus.mainbar = !this.visibleStatus.mainbar;
+    },
+    swiperSlideTo(r,i){
+      
+      if(this.sideBarData.id == r.id){
+        return;
+      }
+
+      if(r.url.length){
+        window.location.href = r.url;
+      }
+      this.sideBarData = r;
+      this.sideBarDataIndex = i;
+      this.swiper.slideTo(i);
+    },
     initHeaders(){
       if (Object.keys(this.cmsCookies).length) {
         this.headers['mtk'] = this.cmsCookies['mtk']
@@ -199,23 +213,24 @@ export default {
         this.headers['fromHostAvatar'] = ''
         this.headers['fromHostNick'] = ''
         this.headers['fromHostBroken'] = 0
+
+        // 微信公众平台
+        if (/https:\/\/mp\.weixin\.qq\.com/gi.test(window.location.origin)) {
+          var _box = document.getElementsByClassName('weui-desktop-account__info'),
+              _fromHostAvatar = _box[0].getElementsByClassName('weui-desktop-account__thumb')[0].src,
+              _fromHostNick = _box[0].getElementsByClassName('weui-desktop-account__nickname')[0].innerText;
+       
+          this.headers['fromHostAvatar'] = _fromHostAvatar? encodeURIComponent(_fromHostAvatar): '';
+          this.headers['fromHostNick'] = _fromHostNick? encodeURIComponent(_fromHostNick): '';
+        }
       }
     },
     sideBarCloseHandler(obj){
       this.visibleStatus.sidebar = !!0
-      this.sideBarData = {};
+      // this.sideBarData = {};
     },
-    showSideBar(r){
-
-      if (/2/gi.test(r.status)) {
-
-        this.$alert('该任务已完成.', "消息", {
-          confirmButtonText: "确定",
-          callback: action => {}
-        });
-
-        return;
-      }
+    showSideBar(r,i){
+      this.swiperSlideTo(r,i);
       this.sideBarData = r;
       this.visibleStatus.sidebar = true;
     },
@@ -300,6 +315,13 @@ export default {
           },function(res) {
 
             if (/^0$/gi.test(res.code)) {
+
+              if (res.first_time) {
+                that.$message({
+                  message: res.msg,
+                  type: 'success'
+                });
+              }
               that.getTaskList();
               that.userInfo = res.info;
               that.visibleStatus.defaultPage = !!1
@@ -334,20 +356,39 @@ export default {
         that.taskList = res.data;
         console.log(res)
         var _href = window.location.origin + window.location.pathname;
-        var _reg = new RegExp('^' + _href, 'gi')
+        var _reg = new RegExp('^' + _href, 'gi');
+        that.sideBarDataIndex = 0;
         res.data.forEach(function(v,i){
+          
           if(_reg.test(v.url)){
+            console.log(_reg.test(v.url),_href,v.url)
+            that.sideBarDataIndex = i;
             that.sideBarData = v;
           }
         })
+
+        console.log(that.sideBarData.url)
+        if(Object.keys(that.sideBarData).length == 0){
+          that.sideBarDataIndex = 0;
+          that.sideBarData = that.taskList[0]
+        }
+
+        that.swiper.slideTo(that.sideBarDataIndex);
       });
 
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    submit() {
+    submit(r,i) {
       var that = this;
+
+      this.swiperSlideTo(r,i);
+
+      if (/2/gi.test(r.status)) {
+        return;
+      }
+
       sendRequest({
         type: 'api',
         info: {
@@ -388,6 +429,37 @@ export default {
 <style lang="scss" scoped>
 .chrome-plugin-insertPage {
     text-align: left;
+
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+	  transition: 300ms;
+	  transform: scale(0.8);
+    }
+	.swiper-slide-active,.swiper-slide-duplicate-active{
+      transform: scale(1);
+	}
+
+    
     .el-header{
       padding-top: 61px;
       .el-header-content{
@@ -403,10 +475,10 @@ export default {
         text-align: center;
         padding-top: 24px;
         .elCardContent {
-            height: 180px;
-            width: 180px;
-            line-height: 180px;
-            font-size: 20px;
+            height: 80px;
+            width: 80px;
+            line-height: 80px;
+            font-size: 14px;
             cursor: pointer;
             &-0{}
             &-1{
