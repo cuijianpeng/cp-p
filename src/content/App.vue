@@ -84,7 +84,7 @@
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide v-for="(item,index) in taskList" :key="index">
                 <div @click="swiperSlideTo(item,index)" style="margin: 24px auto 12px;">
-                  <div style="font-size: 14px;">{{[item.name,item.url.length?index:'null'].join('-')}}</div>
+                  <div style="font-size: 14px;">{{[item.name].join('-')}}</div>
                   <div>
                     <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
                     <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
