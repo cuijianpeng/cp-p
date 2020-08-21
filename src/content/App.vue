@@ -83,12 +83,16 @@
           <div style="position: relative; padding: 40px;">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide v-for="(item,index) in taskList" :key="index">
-                <div @click="swiperSlideTo(item,index)" style="margin: 24px auto 12px;">
-                  <div style="font-size: 14px;">{{[item.name].join('-')}}</div>
-                  <div>
-                    <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
-                    <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
+                <div @click="swiperSlideTo(item,index)" style="padding: 24px 0 12px; min-height: 60px; cursor: pointer; width: 100%;">
+                  <div v-if="item.id == sideBarData.id">
+                    <div style="font-size: 16px; color: #666;">{{[item.name].join('-')}}</div>
+                    <div>
+                      <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
+                      <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
+                    </div>
                   </div>
+                  <div style="font-size: 14px; line-height: 60px; color:#666;" v-else>{{[item.name].join('-')}}</div>
+                  
                 </div>
               </swiper-slide>              
             </swiper>
