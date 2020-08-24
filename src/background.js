@@ -1,8 +1,43 @@
 import {request, baseUrl} from './content/request.js'
 
-var _connects = {};
+// status
+// 0 - 9 [插件]
+// 10 - 19 [cms] 10[未登录]
+// 20 - 29 [平台]
+var _connects = {},
+    _status = 0;
+
+
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+    // if (/^10$/gi.test(_status)) {
+    //     window.open('http://45.63.123.94/backend/Moodle/login');
+    //     return;
+    // }
+    // if (/^11$/gi.test(_status)) {
+    //     window.open('http://45.63.123.94/backend/moodle/mainPage#');
+    //     return;
+    // }
+    
+});
 chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
 
+    if (/fn/gi.test(req.type)) {
+        if (/setBadgeText/gi.test(req.method)) {
+            if (/\?/gi.test(req.info.text)) {
+                _status = 10;
+            }
+            if (/!/gi.test(req.info.text)) {
+                _status = 11;
+            }
+            chrome.browserAction.setBadgeText(req.info)
+        }
+        if (/setIcon/gi.test(req.method)) {
+            chrome.browserAction.setIcon(req.info)
+        }
+        
+        return;
+    }
     if (/api/gi.test(req.type)) {
         console.log(req.type, req.info.method, req.info.url, req)
         request(req.info).then(res => {

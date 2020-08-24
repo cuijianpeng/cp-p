@@ -1,10 +1,24 @@
+var _version = '1.0.0'
+
 document.addEventListener('DOMContentLoaded', function() {
 
+    console.log('插入DOM元素!');
+
     if (location.host == 'mp.weixin.qq.com') {
-        console.log('插入DOM元素!');
         var panel = document.createElement('div');
         panel.id = 'chrome-plugin-insertPage';
         document.body.insertBefore(panel, document.body.childNodes[0])
+    }
+
+    if (location.host == '45.63.123.94') {
+        var panel = document.createElement('div');
+        panel.id = 'chrome-plugin-insertPage';
+        panel.style.display = 'none'
+        panel.innerText = _version;
+
+        if (!document.getElementById('chrome-plugin-insertPage')) {
+            document.body.insertBefore(panel, document.body.childNodes[0])
+        }
     }
 });
 

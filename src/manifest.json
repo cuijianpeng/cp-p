@@ -1,21 +1,22 @@
 {
   "name": "新媒体营销实训平台",
   "description": "新媒体营销实训平台",
-  "version": null,
+  "version": "1.0.0",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",
     "128": "icons/icon_128.png"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "page_action": {
-    "default_icon": "icons/icon_128.png",
-    "default_title": "new-tab-page"
+  "browser_action": {
+    "default_icon": "icons/icon_128.png", 
+    "default_title": "新媒体营销实训平台",
+    "default_popup": "popup/popup.html"
   },
   "chrome_url_overrides": {
   },
   "content_scripts": [{
-      "matches": ["https://mp.weixin.qq.com/*"],
+      "matches": ["https://mp.weixin.qq.com/*", "http://45.63.123.94/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     },

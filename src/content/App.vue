@@ -263,6 +263,8 @@ export default {
     refresh(){
       var that = this,
           _query = searchParse();
+      
+
       if (_query.token && _query.token.length) {
         that.headers['fromHostToken'] = _query.token;
         getCookie({
@@ -273,7 +275,6 @@ export default {
               // name: 'mtk'
             }
           },function(res) {
-            
             if (res && res.length) {
               res.forEach(function(v,i){
                 that.cmsCookies[v.name] = v.value;
@@ -282,15 +283,39 @@ export default {
             that.initHeaders();
             if (that.cmsCookies['mtk']) {
                 that.checkUser()
+                chrome.extension.sendRequest({
+                  type: 'fn',
+                  method: 'setBadgeText',
+                  info:{
+                    text: ''
+                  }
+                });
+                return;
+            }else{
+              chrome.extension.sendRequest({
+                type: 'fn',
+                method: 'setBadgeText',
+                info:{
+                  text: '?'
+                }
+              });
             }
             
         }); 
+        return;
       }
+
+      chrome.extension.sendRequest({
+          type: 'fn',
+          method: 'setBadgeText',
+          info:{
+            text: ''
+          }
+      });
     },
     checkUser(res){
 
       var that = this;
-
       getCookie({
         type: 'cookie',
         method: 'get',
@@ -306,6 +331,7 @@ export default {
           })
         }
         that.initHeaders()
+
         if (that.fromHostCookies['slave_user']) {
 
           sendRequest({
@@ -329,8 +355,26 @@ export default {
               that.getTaskList();
               that.userInfo = res.info;
               that.visibleStatus.defaultPage = !!1
+
+              chrome.extension.sendRequest({
+                type: 'fn',
+                method: 'setBadgeText',
+                info:{
+                  text: ''
+                }
+              });
               return;
             }
+
+
+
+            chrome.extension.sendRequest({
+              type: 'fn',
+              method: 'setBadgeText',
+              info:{
+                text: '!'
+              }
+            });
 
             that.$alert(res.msg, "消息", {
               confirmButtonText: "确定",
@@ -339,6 +383,7 @@ export default {
             
           });
 
+          return;
         }
 
       });       
