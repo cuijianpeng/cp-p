@@ -13,7 +13,6 @@
     "default_title": "new-tab-page"
   },
   "chrome_url_overrides": {
-    "newtab": "content/content.html"
   },
   "content_scripts": [{
       "matches": ["https://mp.weixin.qq.com/*"],
