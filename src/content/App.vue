@@ -3,7 +3,13 @@
   <el-container v-if="visibleStatus.defaultPage">
     <el-header>
       <div class="el-header-content">
-        <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
+        <el-menu 
+        background-color="#12223E"
+        text-color="#D8D8D8"
+        active-text-color="#4F8DFF"
+        :default-active="activeIndex" 
+        mode="horizontal" 
+        @select="handleSelect">
           <el-menu-item style="float: right;">
             <el-popover placement="bottom" width="320" trigger="click">
               <div style="text-align: left;">
@@ -28,22 +34,10 @@
               <el-avatar size="medium" shape="square" slot="reference">{{userInfo.username}}</el-avatar>
             </el-popover>
           </el-menu-item>
-          <el-menu-item disabled>
-            LOGO:
-            新媒体营销实训平台
+          <el-menu-item>
+            <img :src="logo" alt="">
           </el-menu-item>
-          <el-submenu index="1">
-            <template slot="title">首页</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">任务中心</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-          </el-submenu>
+          <el-menu-item index="1">首页</el-menu-item>
           <el-menu-item index="2">实用工具</el-menu-item>
           <el-menu-item index="3">素材中心</el-menu-item>
           <el-menu-item index="4">发文记录</el-menu-item>
@@ -55,7 +49,7 @@
     <el-main>
 
       <div style="width: 80%; margin: 0 auto;" v-show="Object.keys(sideBarData).length">
-        <div>
+        <!-- <div>
           <div style="float: right;">
             <el-button type="text" @click="visibleStatus.sidebar = true">查看任务讲解</el-button>
             <el-button type="text" @click="showHideMainBar">{{visibleStatus.mainbar? '收起': '展开'}}任务面板</el-button>
@@ -67,7 +61,7 @@
             </el-breadcrumb>
           </div>
           
-        </div>
+        </div> -->
         
         <div v-show="visibleStatus.mainbar">
 
@@ -79,26 +73,34 @@
               <el-step title="黄金任务"></el-step>
             </el-steps>
           </div> -->
-
-          <div style="position: relative; padding: 40px;">
-            <swiper ref="mySwiper" :options="swiperOptions">
-              <swiper-slide v-for="(item,index) in taskList" :key="index">
-                <div @click="swiperSlideTo(item,index)" style="padding: 24px 0 12px; min-height: 60px; cursor: pointer; width: 100%;">
-                  <div v-if="item.id == sideBarData.id">
-                    <div style="font-size: 16px; color: #666;">{{[item.name].join('-')}}</div>
+          <div style="height: 104px;">
+             <div style="position: relative; padding: 0 40px;">
+              <swiper ref="mySwiper" :options="swiperOptions">
+                <swiper-slide v-for="(item,index) in taskList" :key="index">
+                  <div class="mySwiperItem" @click.stop="swiperSlideTo(item,index,false)" style="cursor: pointer; width: 100%;">
                     <div>
-                      <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
-                      <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
+                      <div style="font-size: 18px; color: #252631; line-height: 64px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 0 12px;">{{index + 1}}.{{[item.name].join('')}}</div>
+                      <div style="height: 44px; line-height: 44px; border-top: 1px solid #efefef;" class="mySwiperItemContent">
+                        <div v-if="item.id == sideBarData.id">
+                          <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
+                          <span style="display: inline-block; width: 1px; background: #efefef; height: 14px; vertical-align: middle;margin: 0 8px;"></span>
+                          <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
+                        </div>
+                        <div v-else>
+                          <el-button type="text" @click.stop="swiperSlideTo(item,index, true)">执行任务</el-button>
+                        </div>
+                        
+                      </div>
                     </div>
+                    
                   </div>
-                  <div style="font-size: 14px; line-height: 60px; color:#666;" v-else>{{[item.name].join('-')}}</div>
-                  
-                </div>
-              </swiper-slide>              
-            </swiper>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+                </swiper-slide>              
+              </swiper>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
           </div>
+         
          
         </div>
       </div>
@@ -121,16 +123,17 @@ import sideBar from "./components/sideBar.vue";
 import {sendRequest,searchParse,getCookie} from "./utils.js"
 import 'swiper/css/swiper.css'
 
+import logo from './images/@1x/logo.png'
+
 var defaultThis;
 export default {
   data() {
     return {
+      logo,
       swiperOptions: {
-        slidesPerView: 5,
-        spaceBetween: 40,
+        slidesPerView: 7,
+        spaceBetween : -20,
         centeredSlides: true,
-        height: 240,
-        // loop: true,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
@@ -142,7 +145,7 @@ export default {
         on:{
           slideChangeTransitionEnd:function(){
             console.log(defaultThis,this.activeIndex);
-            defaultThis.swiperSlideTo(defaultThis.taskList[this.activeIndex], this.activeIndex)
+            defaultThis.swiperSlideTo(defaultThis.taskList[this.activeIndex], this.activeIndex, false)
           },
         }
       },
@@ -193,13 +196,13 @@ export default {
       var that = this;
       this.visibleStatus.mainbar = !this.visibleStatus.mainbar;
     },
-    swiperSlideTo(r,i){
+    swiperSlideTo(r,i, s){
       
       if(this.sideBarData.id == r.id){
         return;
       }
 
-      if(r.url.length){
+      if(s && r.url.length){
         window.location.href = r.url;
       }
       this.sideBarData = r;
@@ -234,7 +237,6 @@ export default {
       // this.sideBarData = {};
     },
     showSideBar(r,i){
-      this.swiperSlideTo(r,i);
       this.sideBarData = r;
       this.visibleStatus.sidebar = true;
     },
@@ -432,44 +434,51 @@ export default {
     submit(r,i) {
       var that = this;
 
-      this.swiperSlideTo(r,i);
-
       if (/2/gi.test(r.status)) {
         return;
       }
 
-      sendRequest({
-        type: 'api',
-        info: {
-          url: 'backend/task/save_user_task',
-          method: 'get',
-          headers: that.headers,
-          params: {
-            plat_account_id: that.fromHostCookies['slave_user'],
-            task_id: that.sideBarData.id,
-            status: 2
-          }
-        }
-      },function(res) {
+      that.$confirm('须完成所有操作步骤,并输出实训结果,如检测发现未完成,该任务将扣除得分', '确认完成该任务', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
 
-        if (/^0$/gi.test(res.code)) {
-          that.getTaskList();
-          that.sideBarCloseHandler();
-          that.$alert("完成任务", "消息", {
+        sendRequest({
+          type: 'api',
+          info: {
+            url: 'backend/task/save_user_task',
+            method: 'get',
+            headers: that.headers,
+            params: {
+              plat_account_id: that.fromHostCookies['slave_user'],
+              task_id: that.sideBarData.id,
+              status: 2
+            }
+          }
+        },function(res) {
+
+          if (/^0$/gi.test(res.code)) {
+            that.getTaskList();
+            that.sideBarCloseHandler();
+            that.$alert("完成任务", "消息", {
+              confirmButtonText: "确定",
+              callback: action => {}
+            });
+
+            return;
+
+          }
+
+          that.$alert(res.msg, "消息", {
             confirmButtonText: "确定",
             callback: action => {}
           });
 
-          return;
-
-        }
-
-        that.$alert(res.msg, "消息", {
-          confirmButtonText: "确定",
-          callback: action => {}
         });
 
-      });      
+      }).catch(() => {});
+            
     }
   }
 };
@@ -478,7 +487,37 @@ export default {
 <style lang="scss" scoped>
 .chrome-plugin-insertPage {
     text-align: left;
+    .swiper-slide{
+      &:hover{
+        transition: none;
+        margin-top: -4px;
+      }
+    }
+    .swiper-slide-active{
+      .mySwiperItem .mySwiperItemContent{
+        display: block;;
+      }
+    }
+    .mySwiperItem{
 
+      .mySwiperItemContent{
+        display: none;
+      }
+      &:hover{
+        .mySwiperItemContent{
+          display: block;
+        }
+      }
+    }
+    .swiper-slide-active{
+      transform: scale(0.8)!important;
+      margin-top: -4px;
+    }
+    .swiper-button-prev, .swiper-container-rtl .swiper-button-next,
+    .swiper-button-next, .swiper-container-rtl .swiper-button-prev{
+      top: 0;
+      margin-top: 12px!important;
+    }
     .swiper-container {
       width: 100%;
       height: 100%;

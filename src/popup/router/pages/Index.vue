@@ -16,7 +16,7 @@
             <el-col :span="16">
               <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
                 <div>新希望职业教育学院</div>
-                <div>学员：李小明</div>
+                <div>学员：{{userInfo.username}}</div>
               </div>
             </el-col>
             <el-col :span="4">
@@ -38,33 +38,15 @@
             </el-col>
           </el-row>
         </div>
-        <div style="padding-bottom: 12px;">
+        <div style="padding-bottom: 12px;" v-for="(item,index) in accountList" :key="index">
           <el-row>
             <el-col :span="4">
               <div class="block"><el-avatar :size="50"></el-avatar></div>
             </el-col>
             <el-col :span="16">
               <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
-                <div>新希望职业教育学院</div>
-                <div>学员：李小明</div>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="text-align: right;">
-                <span style="font-size: 24px; line-height: 48px;" class="el-icon-check"></span>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-        <div style="padding-bottom: 12px;">
-          <el-row>
-            <el-col :span="4">
-              <div class="block"><el-avatar :size="50"></el-avatar></div>
-            </el-col>
-            <el-col :span="16">
-              <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
-                <div>新希望职业教育学院</div>
-                <div>学员：李小明</div>
+                <div>{{item.hostName}}</div>
+                <div>学员：{{item.fromHostNick}}</div>
               </div>
             </el-col>
             <el-col :span="4">
@@ -118,7 +100,8 @@ export default {
         fromHostBroken: 0,
         fromHostToken: '',
       },
-      userInfo:{}
+      userInfo:{},
+      accountList: []
     };
   },
   created(){
@@ -126,10 +109,27 @@ export default {
     console.log(defaultThis, window.location)
     this.refresh();
     this.listener();
+    this.checkVersion()
   },
   components: {
   },
   methods: {
+    checkVersion(){
+      sendRequest({
+        type: 'api',
+        info: {
+          url: 'backend/Plugin/check',
+          method: 'post',
+          headers: that.headers,
+          data: {
+            version: '1.0.0'
+          }
+        }
+      },function(res) {
+        
+        
+      });
+    },
     closeEvtClickHandler(){
       window.open('http://45.63.123.94/backend/Moodle/login');
     },
@@ -224,6 +224,8 @@ export default {
         if (/^0$/gi.test(res.code)) {
 
           that.userInfo = res.info;
+          that.accountList = res.account_list;
+
           chrome.extension.sendRequest({
             type: 'fn',
             method: 'setBadgeText',
