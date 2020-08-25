@@ -285,35 +285,12 @@ export default {
             that.initHeaders();
             if (that.cmsCookies['mtk']) {
                 that.checkUser()
-                chrome.extension.sendRequest({
-                  type: 'fn',
-                  method: 'setBadgeText',
-                  info:{
-                    text: ''
-                  }
-                });
                 return;
-            }else{
-              chrome.extension.sendRequest({
-                type: 'fn',
-                method: 'setBadgeText',
-                info:{
-                  text: '?'
-                }
-              });
-            }
+            }else{ }
             
         }); 
         return;
       }
-
-      chrome.extension.sendRequest({
-          type: 'fn',
-          method: 'setBadgeText',
-          info:{
-            text: ''
-          }
-      });
     },
     checkUser(res){
 
@@ -357,26 +334,8 @@ export default {
               that.getTaskList();
               that.userInfo = res.info;
               that.visibleStatus.defaultPage = !!1
-
-              chrome.extension.sendRequest({
-                type: 'fn',
-                method: 'setBadgeText',
-                info:{
-                  text: ''
-                }
-              });
               return;
             }
-
-
-
-            chrome.extension.sendRequest({
-              type: 'fn',
-              method: 'setBadgeText',
-              info:{
-                text: '!'
-              }
-            });
 
             that.$alert(res.msg, "消息", {
               confirmButtonText: "确定",

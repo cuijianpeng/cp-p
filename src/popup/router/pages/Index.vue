@@ -107,27 +107,27 @@ export default {
   created(){
     defaultThis = this;
     console.log(defaultThis, window.location)
+    this.checkVersion()
     this.refresh();
     this.listener();
-    this.checkVersion()
+    
   },
   components: {
   },
   methods: {
     checkVersion(){
+      var that = this;
       sendRequest({
         type: 'api',
         info: {
           url: 'backend/Plugin/check',
           method: 'post',
-          headers: that.headers,
           data: {
             version: '1.0.0'
           }
         }
       },function(res) {
-        
-        
+        console.log(res)
       });
     },
     closeEvtClickHandler(){
