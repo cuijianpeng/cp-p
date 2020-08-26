@@ -2,50 +2,9 @@
 <div class="chrome-plugin-insertPage">
   <el-container v-if="visibleStatus.defaultPage">
     <el-header>
-      <div class="el-header-content">
-        <el-menu 
-        background-color="#12223E"
-        text-color="#D8D8D8"
-        active-text-color="#4F8DFF"
-        :default-active="activeIndex" 
-        mode="horizontal" 
-        @select="handleSelect">
-          <el-menu-item style="float: right;">
-            <el-popover placement="bottom" width="320" trigger="click">
-              <div style="text-align: left;">
-                <div style="margin: 12px 0 12px; border-bottom: 1px solid #efefef; padding-bottom: 12px;">
-                  <div style="float: right;">课程平台</div>
-                  任务阶段
-                </div>
-                <div>
-                  青铜任务-设置自动回复
-                </div>
-                <div style="margin: 12px 0 12px; border-bottom: 1px solid #efefef; padding-bottom: 12px;">
-                  <div style="float: right;">管理</div>
-                  已绑定新媒体帐号
-                </div>
-                <div>
-                  <ul>
-                    <li>帐号121</li>
-                    <li>帐号222</li>
-                  </ul>
-                </div>
-              </div>
-              <el-avatar size="medium" shape="square" slot="reference">{{userInfo.username}}</el-avatar>
-            </el-popover>
-          </el-menu-item>
-          <el-menu-item>
-            <img :src="logo" alt="">
-          </el-menu-item>
-          <el-menu-item index="1">首页</el-menu-item>
-          <el-menu-item index="2">实用工具</el-menu-item>
-          <el-menu-item index="3">素材中心</el-menu-item>
-          <el-menu-item index="4">发文记录</el-menu-item>
-          <el-menu-item index="5">新媒体帐号管理</el-menu-item>
-          <el-menu-item index="6">课程平台</el-menu-item>
-        </el-menu>
-      </div>
+      <headerContent />
     </el-header>
+    
     <el-main>
 
       <div style="margin: 0 auto;" v-show="Object.keys(sideBarData).length">
@@ -120,6 +79,7 @@
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
 import {baseUrl} from './request.js'
 import sideBar from "./components/sideBar.vue";
+import headerContent from "./components/header.vue";
 import {sendRequest,searchParse,getCookie} from "./utils.js"
 import 'swiper/css/swiper.css'
 
@@ -187,6 +147,7 @@ export default {
     this.listener();
   },
   components: {
+    headerContent,
     sideBar,
     Swiper,
     SwiperSlide
@@ -508,17 +469,7 @@ export default {
 	}
 
     
-    .el-header{
-      padding-top: 61px;
-      .el-header-content{
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 999;
-        background: #fff;
-      }
-    }
+    
     .cardlist {
         text-align: center;
         padding-top: 24px;
