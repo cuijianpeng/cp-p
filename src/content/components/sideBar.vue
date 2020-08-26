@@ -6,7 +6,7 @@
         <el-button style="float: right; padding: 3px 0" type="text" @click="dialogClose">关闭</el-button>
       </div>
       <div>
-          <div v-html="sideBarData.detail"></div>
+          <div v-html="formatHtml(sideBarData.detail)"></div>
       </div>
       <!-- <div>
           <ul>
@@ -33,12 +33,18 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+var showdownConverter = new showdown.Converter();
+
 export default {
   data() {
     return {};
   },
   props:['visibleStatus', 'sideBarData', 'sideBarCloseHandler'],
   methods:{
+    formatHtml(v){
+      return showdownConverter.makeHtml(v)
+    },
     dialogClose(){
       this.visibleStatus.sidebar = !!0
       this.$emit('sideBarCloseHandler');

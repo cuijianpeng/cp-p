@@ -3,12 +3,23 @@
     <el-alert
       title="您的插件不最新版本"
       type="warning"
+      v-if="versionInfo.need_update"
       @close="closeEvtClickHandler"
       close-text="立即更新">
     </el-alert>
     <div v-if="cmsCookies['mtk']">
       <div style="margin: 12px;" v-if="Object.keys(userInfo).length">
         <div style="margin-bottom: 48px;">
+          <el-row>
+            <el-col :span="20">
+              <div style="font-size: 12px; color: #333; padding-bottom: 8px;">当前帐号信息</div>
+            </el-col>
+            <el-col :span="4">
+              <div style="text-align: right; font-size: 12px; color: #333;">
+                
+              </div>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="4">
               <div class="block"><el-avatar :size="50"></el-avatar></div>
@@ -101,7 +112,8 @@ export default {
         fromHostToken: '',
       },
       userInfo:{},
-      accountList: []
+      accountList: [],
+      versionInfo:{}
     };
   },
   created(){
@@ -116,22 +128,23 @@ export default {
   },
   methods: {
     checkVersion(){
-      var that = this;
+      var that = this,
+        _version = '0.0.1';
       sendRequest({
         type: 'api',
         info: {
           url: 'backend/Plugin/check',
           method: 'post',
           data: {
-            version: '1.0.0'
+            version: _version
           }
         }
       },function(res) {
-        console.log(res)
+        that.versionInfo = res.data;
       });
     },
     closeEvtClickHandler(){
-      window.open('http://45.63.123.94/backend/Moodle/login');
+      window.open(this.versionInfo.download_url);
     },
     bindEvtClickHandler(){
       window.open('http://45.63.123.94/backend/moodle/mainPage#');

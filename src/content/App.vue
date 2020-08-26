@@ -48,7 +48,7 @@
     </el-header>
     <el-main>
 
-      <div style="width: 80%; margin: 0 auto;" v-show="Object.keys(sideBarData).length">
+      <div style="margin: 0 auto;" v-show="Object.keys(sideBarData).length">
         <!-- <div>
           <div style="float: right;">
             <el-button type="text" @click="visibleStatus.sidebar = true">查看任务讲解</el-button>
@@ -81,7 +81,7 @@
                     <div>
                       <div style="font-size: 18px; color: #252631; line-height: 64px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 0 12px;">{{index + 1}}.{{[item.name].join('')}}</div>
                       <div style="height: 44px; line-height: 44px; border-top: 1px solid #efefef;" class="mySwiperItemContent">
-                        <div v-if="item.id == sideBarData.id">
+                        <div v-if="item.id == sideBarData.id && diffUrl(item)">
                           <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
                           <span style="display: inline-block; width: 1px; background: #efefef; height: 14px; vertical-align: middle;margin: 0 8px;"></span>
                           <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
@@ -192,15 +192,16 @@ export default {
     SwiperSlide
   },
   methods: {
+    diffUrl(v){
+      var _href = window.location.origin + window.location.pathname;
+      var _reg = new RegExp('^' + _href, 'gi');
+      return _reg.test(v.url);
+    },
     showHideMainBar(){
       var that = this;
       this.visibleStatus.mainbar = !this.visibleStatus.mainbar;
     },
     swiperSlideTo(r,i, s){
-      
-      if(this.sideBarData.id == r.id){
-        return;
-      }
 
       if(s && r.url.length){
         window.location.href = r.url;
