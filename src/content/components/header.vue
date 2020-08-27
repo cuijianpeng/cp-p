@@ -9,10 +9,11 @@
                         </el-badge>
                     </li>
                     <li>帮助中心</li>
-                    <li>
+                    <li v-if="Object.keys(userInfo).length">
                         <el-dropdown>
-                            <span>
-                                李晓明<i class="el-icon-arrow-down el-icon--right"></i>
+                            <span style="color: #D8D8D8;">
+                                <el-avatar style="vertical-align: middle; margin-right: 4px;" size="medium" src=""></el-avatar>
+                                {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item>帐户信息</el-dropdown-item>
@@ -61,7 +62,7 @@ export default {
         logo
     };
   },
-  props:[],
+  props:['userInfo'],
   methods:{
   }
 };

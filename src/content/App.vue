@@ -2,7 +2,7 @@
 <div class="chrome-plugin-insertPage">
   <el-container v-if="visibleStatus.defaultPage">
     <el-header>
-      <headerContent />
+      <headerContent :userInfo="userInfo" />
     </el-header>
     
     <el-main>
@@ -92,8 +92,10 @@ export default {
       logo,
       swiperOptions: {
         slidesPerView: 7,
-        spaceBetween : -20,
+        spaceBetween : 0,
         centeredSlides: true,
+        observer:true,
+        observeParents:true,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
@@ -415,16 +417,21 @@ export default {
       }
     }
     .swiper-slide-active{
-      .mySwiperItem .mySwiperItemContent{
-        display: block;;
+      .mySwiperItem{
+        background: #fff;
+        .mySwiperItemContent{
+          display: block;;
+        }
       }
     }
     .mySwiperItem{
-
+      border: 1px solid #ECECF4;
+      background: #F8F8FC;
       .mySwiperItemContent{
         display: none;
       }
       &:hover{
+        background: #fff;
         .mySwiperItemContent{
           display: block;
         }
