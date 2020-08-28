@@ -38,12 +38,12 @@
                 <swiper-slide v-for="(item,index) in taskList" :key="index">
                   <div class="mySwiperItem" @click.stop="swiperSlideTo(item,index,false)" style="cursor: pointer; width: 100%;">
                     <div>
-                      <div style="font-size: 18px; color: #252631; line-height: 64px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 0 12px;">{{index + 1}}.{{[item.name].join('')}}</div>
+                      <div :class="{mySwiperItemHeader: 1, mySwiperItemHeaderSuccess: item.status == '2'}">{{index + 1}}.{{[item.name].join('')}}</div>
                       <div style="height: 44px; line-height: 44px; border-top: 1px solid #efefef;" class="mySwiperItemContent">
                         <div v-if="item.id == sideBarData.id && diffUrl(item)">
-                          <el-button type="text" @click.stop="showSideBar(item,index)">查看讲解</el-button>
+                          <el-button type="text" icon="el-icon-warning-outline" @click.stop="showSideBar(item,index)">查看讲解</el-button>
                           <span style="display: inline-block; width: 1px; background: #efefef; height: 14px; vertical-align: middle;margin: 0 8px;"></span>
-                          <el-button type="text" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
+                          <el-button type="text" icon="el-icon-circle-check" @click.stop="submit(item,index)" :disabled="/2/gi.test(item.status)">{{/2/gi.test(item.status)?'已完成':'完成任务'}}</el-button>
                         </div>
                         <div v-else>
                           <el-button type="text" @click.stop="swiperSlideTo(item,index, true)">执行任务</el-button>
@@ -84,12 +84,18 @@ import {sendRequest,searchParse,getCookie} from "./utils.js"
 import 'swiper/css/swiper.css'
 
 import logo from './images/@1x/logo.png'
+import prev from './images/@1x/prev.png'
+import next from './images/@1x/next.png'
+import success from './images/@1x/success.png'
 
 var defaultThis;
 export default {
   data() {
     return {
       logo,
+      prev,
+      next,
+      success,
       swiperOptions: {
         slidesPerView: 7,
         spaceBetween : 0,
@@ -364,6 +370,8 @@ export default {
       that.$confirm('须完成所有操作步骤,并输出实训结果,如检测发现未完成,该任务将扣除得分', '确认完成该任务', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        confirmButtonClass: 'confirmButtonClass',
+        cancelButtonClass: 'cancelButtonClass',
         type: 'warning'
       }).then(() => {
 
@@ -406,7 +414,34 @@ export default {
   }
 };
 </script>
-
+<style lang="scss">
+.confirmButtonClass{
+  color: rgb(255, 255, 255)!important;
+  background: rgb(102, 177, 255)!important;
+  border-color: rgb(102, 177, 255)!important;
+}
+.cancelButtonClass{
+  color: rgb(64, 158, 255)!important;
+  background-color: rgb(236, 245, 255)!important;
+  border-color: rgb(198, 226, 255)!important;
+}
+.swiper-button-prev{
+  &::after{
+    content: '';
+    background: url('./images/@1x/prev.png') no-repeat 0 0;
+    width: 13px;
+    height: 22px;
+  }
+}
+.swiper-button-next{
+  &::after{
+    content: '';
+    background: url('./images/@1x/next.png') no-repeat 0 0;
+    width: 13px;
+    height: 22px;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .chrome-plugin-insertPage {
     text-align: left;
@@ -419,6 +454,7 @@ export default {
     .swiper-slide-active{
       .mySwiperItem{
         background: #fff;
+        
         .mySwiperItemContent{
           display: block;;
         }
@@ -427,6 +463,13 @@ export default {
     .mySwiperItem{
       border: 1px solid #ECECF4;
       background: #F8F8FC;
+      .mySwiperItemHeader{
+          font-size: 18px; color: #252631; line-height: 64px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 0 12px;
+
+      }
+      .mySwiperItemHeaderSuccess{
+        background: url('./images/@1x/success.png') no-repeat right center;
+      }
       .mySwiperItemContent{
         display: none;
       }
