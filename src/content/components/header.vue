@@ -28,10 +28,10 @@
                     <img :src="logo" alt="">
                 </li>
                 <li class="nav-item">
-                    <a href="" class="active">首页</a>
+                    <a href="">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a href="">任务中心</a>
+                    <a href="" class="active">任务中心</a>
                 </li>
                 <li class="nav-item">
                     <a href="">实用工具</a>
