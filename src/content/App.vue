@@ -141,7 +141,7 @@ export default {
     diffUrl(v){
       var _href = window.location.href;
       var _reg = new RegExp('^' + _href, 'gi');
-      return _reg.test(v.url);
+      return _href == v.url;
     },
     showHideMainBar(){
       var that = this;
@@ -311,14 +311,11 @@ export default {
         }
       },function(res) {
         that.taskList = res.data;
-        console.log(res)
         var _href = window.location.href;
         var _reg = new RegExp('^' + _href, 'gi');
         that.sideBarDataIndex = 0;
         res.data.forEach(function(v,i){
-          
-          if(_reg.test(v.url)){
-            console.log(_reg.test(v.url),_href,v.url)
+          if(_href == v.url){
             that.sideBarDataIndex = i;
             that.sideBarData = v;
           }
