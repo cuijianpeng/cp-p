@@ -4,41 +4,18 @@
     <el-header>
       <headerContent :userInfo="userInfo" />
     </el-header>
-    
-    <el-main>
-
-      <div style="margin: 0 auto;" v-show="Object.keys(sideBarData).length">
-        <!-- <div>
-          <div style="float: right;">
-            <el-button type="text" @click="visibleStatus.sidebar = true">查看任务讲解</el-button>
-            <el-button type="text" @click="showHideMainBar">{{visibleStatus.mainbar? '收起': '展开'}}任务面板</el-button>
-          </div>
-          <div style="padding-top: 12px;">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item>当前任务</el-breadcrumb-item>
-              <el-breadcrumb-item v-if="Object.keys(sideBarData).length">{{sideBarData.name}}</el-breadcrumb-item>
-            </el-breadcrumb>
-          </div>
-          
-        </div> -->
-        
+    <el-main style="margin-top: -6px; padding: 0;">
+      <div style="margin: 0 auto;" v-show="Object.keys(sideBarData).length">        
         <div v-show="visibleStatus.mainbar">
-
-          <!-- <div style="margin: 0 auto 24px; padding: 48px 0 24px;">
-            <el-steps :active="2" align-center finish-status="success">
-              <el-step title="新手任务"></el-step>
-              <el-step title="青铜任务"></el-step>
-              <el-step title="白银任务"></el-step>
-              <el-step title="黄金任务"></el-step>
-            </el-steps>
-          </div> -->
           <div style="height: 104px;">
              <div style="position: relative; padding: 0 40px;">
               <swiper ref="mySwiper" :options="swiperOptions">
                 <swiper-slide v-for="(item,index) in taskList" :key="index">
                   <div class="mySwiperItem" @click.stop="swiperSlideTo(item,index,false)" style="cursor: pointer; width: 100%;">
                     <div>
-                      <div :class="{mySwiperItemHeader: 1, mySwiperItemHeaderSuccess: item.status == '2'}">{{index + 1}}.{{[item.name].join('')}}</div>
+                      <div :class="{mySwiperItemHeader: 1, mySwiperItemHeaderSuccess: item.status == '2'}">
+                        <span style="color: rgb(182, 186, 190); font-family: Verdana; font-size: 23px; vertical-align: bottom;">{{index + 1}}.</span>
+                        {{[item.name].join('')}}</div>
                       <div style="height: 44px; line-height: 44px; border-top: 1px solid #efefef;" class="mySwiperItemContent">
                         <div v-if="item.id == sideBarData.id && diffUrl(item)">
                           <el-button type="text" icon="el-icon-warning-outline" @click.stop="showSideBar(item,index)">查看讲解</el-button>
@@ -415,6 +392,14 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-card__header{
+  padding: 18px 20px 0!important;
+  border: none!important;
+  span{
+    font-weight: bold;
+    font-size: 16px;;
+  }
+}
 .confirmButtonClass{
   color: rgb(255, 255, 255)!important;
   background: rgb(102, 177, 255)!important;
@@ -445,16 +430,21 @@ export default {
 <style lang="scss" scoped>
 .chrome-plugin-insertPage {
     text-align: left;
+    background: #fff;
     .swiper-slide{
+      background: none!important;
       &:hover{
         transition: none;
         margin-top: -4px;
       }
     }
     .swiper-slide-active{
+      
       .mySwiperItem{
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
         background: #fff;
-        
+        border-radius: 0 0 8px 8px;
+        overflow: hidden;
         .mySwiperItemContent{
           display: block;;
         }
@@ -475,6 +465,8 @@ export default {
       }
       &:hover{
         background: #fff;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+        border-radius: 0 0 8px 8px;
         .mySwiperItemContent{
           display: block;
         }
@@ -497,22 +489,9 @@ export default {
       text-align: center;
       font-size: 18px;
       background: #fff;
-
-      /* Center slide text vertically */
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-	  transition: 300ms;
-	  transform: scale(0.8);
+	    transition: 300ms;
+	    transform: scale(0.8);
+      flex-shrink: 0;
     }
 	.swiper-slide-active,.swiper-slide-duplicate-active{
       transform: scale(1);
