@@ -162,7 +162,7 @@ export default {
   },
   methods: {
     diffUrl(v){
-      var _href = window.location.origin + window.location.pathname;
+      var _href = window.location.href;
       var _reg = new RegExp('^' + _href, 'gi');
       return _reg.test(v.url);
     },
@@ -335,7 +335,7 @@ export default {
       },function(res) {
         that.taskList = res.data;
         console.log(res)
-        var _href = window.location.origin + window.location.pathname;
+        var _href = window.location.href;
         var _reg = new RegExp('^' + _href, 'gi');
         that.sideBarDataIndex = 0;
         res.data.forEach(function(v,i){
