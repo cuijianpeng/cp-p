@@ -76,6 +76,7 @@ export default {
       swiperOptions: {
         slidesPerView: 7,
         spaceBetween : 0,
+        // slidesPerGroup : 7,
         centeredSlides: true,
         observer:true,
         observeParents:true,
@@ -341,12 +342,11 @@ export default {
         return;
       }
 
-      that.$confirm('须完成所有操作步骤,并输出实训结果,如检测发现未完成,该任务将扣除得分', '确认完成该任务', {
+      that.$confirm('须完成所有操作步骤,并输出实训结果,如检测发现未完成,该任务将扣除得分', '确认完成该任务?', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         confirmButtonClass: 'confirmButtonClass',
-        cancelButtonClass: 'cancelButtonClass',
-        type: 'warning'
+        cancelButtonClass: 'cancelButtonClass'
       }).then(() => {
 
         sendRequest({
@@ -366,10 +366,10 @@ export default {
           if (/^0$/gi.test(res.code)) {
             that.getTaskList();
             that.sideBarCloseHandler();
-            that.$alert("完成任务", "消息", {
-              confirmButtonText: "确定",
-              callback: action => {}
-            });
+            // that.$alert("完成任务", "消息", {
+            //   confirmButtonText: "确定",
+            //   callback: action => {}
+            // });
 
             return;
 
@@ -389,6 +389,23 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-message-box__title {
+  font-size: 18px;
+  span{
+    margin-top: 20px;
+    margin-left: 25px;
+    display: inline-block;
+  }
+}
+
+.el-message-box__message{
+  margin-top: 5px!important;
+  margin-left: 25px!important;
+  margin-right: 25px!important;
+  p{
+    font-size: 14px!important;
+  }
+}
 .el-card__header{
   padding: 18px 20px 0!important;
   border: none!important;
@@ -398,14 +415,18 @@ export default {
   }
 }
 .confirmButtonClass{
+  font-size: 14px!important;
   color: rgb(255, 255, 255)!important;
   background: rgb(102, 177, 255)!important;
   border-color: rgb(102, 177, 255)!important;
+  border-radius: 2px!important;
 }
 .cancelButtonClass{
-  color: rgb(64, 158, 255)!important;
-  background-color: rgb(236, 245, 255)!important;
-  border-color: rgb(198, 226, 255)!important;
+  font-size: 14px!important;
+  color: #999999!important;
+  background-color:#fff!important;
+  border: 1px solid #CFCFCF!important;
+  border-radius: 2px!important;
 }
 .swiper-button-prev{
   &::after{
