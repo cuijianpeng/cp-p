@@ -17,6 +17,7 @@
                         <span style="color: rgb(182, 186, 190); font-family: Verdana; font-size: 23px; vertical-align: bottom;">{{index + 1}}.</span>
                         {{[item.name].join('')}}</div>
                       <div style="height: 44px; line-height: 44px; border-top: 1px solid #efefef;" class="mySwiperItemContent">
+                        <!-- {{item.id}}--{{sideBarData.id}}--{{diffUrl(item)}} -->
                         <div v-if="item.id == sideBarData.id && diffUrl(item)">
                           <el-button type="text" icon="el-icon-warning-outline" @click.stop="showSideBar(item,index)">查看讲解</el-button>
                           <span style="display: inline-block; width: 1px; background: #efefef; height: 14px; vertical-align: middle;margin: 0 8px;"></span>
@@ -140,9 +141,27 @@ export default {
   },
   methods: {
     diffUrl(v){
-      var _href = window.location.href;
-      var _reg = new RegExp('^' + _href, 'gi');
-      return _href == v.url;
+      var _href,
+        _reg,
+        _regString,
+        _regStringArray = [];
+
+      // 精准匹配
+      if (/^2$/gi.test(v.url_match_mode)) {
+        _href = encodeURIComponent(window.location.href);
+        _regString = '^' + encodeURIComponent(v.url[0]) + '$'
+      }else{
+        // 模糊匹配
+        v.url.forEach(function(v,i){
+          _regStringArray.push(encodeURIComponent(v.split('?')[0]))
+        })
+        _href = encodeURIComponent(window.location.href.split('?')[0]);
+        _regString = '^(' + _regStringArray.join('|') + ')'
+      }
+
+      _reg = new RegExp(_regString, 'gi')
+      // console.log('diffUrl', v.id)
+      return _reg.test(_href);
     },
     showHideMainBar(){
       var that = this;
@@ -150,8 +169,8 @@ export default {
     },
     swiperSlideTo(r,i, s){
 
-      if(s && r.url.length){
-        window.location.href = r.url;
+      if(s && r.url.length && r.url[0].length){
+        window.location.href = r.url[0];
       }
       this.sideBarData = r;
       this.sideBarDataIndex = i;
@@ -312,17 +331,40 @@ export default {
         }
       },function(res) {
         that.taskList = res.data;
-        var _href = window.location.href;
-        var _reg = new RegExp('^' + _href, 'gi');
+        // var _href = window.location.href;
+        // var _reg = new RegExp('^' + _href, 'gi');
         that.sideBarDataIndex = 0;
         res.data.forEach(function(v,i){
-          if(_href == v.url){
+
+          var _href,
+            _reg,
+            _regString,
+            _regStringArray = [];
+
+          // 精准匹配
+          if (/^2$/gi.test(v.url_match_mode)) {
+            _href = encodeURIComponent(window.location.href);
+            _regString = '^' + encodeURIComponent(v.url[0]) + '$'
+          }else{
+            // 模糊匹配
+            v.url.forEach(function(v,i){
+              _regStringArray.push(encodeURIComponent(v.split('?')[0]))
+            })
+            _href = encodeURIComponent(window.location.href.split('?')[0]);
+            _regString = '^(' + _regStringArray.join('|') + ')'
+          }
+
+          _reg = new RegExp(_regString, 'gi')
+
+          
+          if(_reg.test(_href)){
             that.sideBarDataIndex = i;
             that.sideBarData = v;
           }
         })
 
-        console.log(that.sideBarData.url)
+        // console.log(that.sideBarData.id)
+
         if(Object.keys(that.sideBarData).length == 0){
           that.sideBarDataIndex = 0;
           that.sideBarData = that.taskList[0]
