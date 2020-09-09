@@ -1,16 +1,159 @@
 body {
     margin: 0;
     padding: 0;
+    background: #F8F8FC;
 }
 
-.platformList .list-inline li .platformList-item {
-    width: 320px;
-    margin-bottom: 15px;
+.text-success {
+    color: #06B365;
+}
+
+.text-muted {
+    color: #B6BABE;
+}
+
+.btn-default {
+    background: #fff;
+    &:hover {
+        background: #1361F0;
+        color: #fff;
+        border: 1px solid #1361F0;
+    }
+}
+
+.taskList {
+    margin: 0 60px;
+    .table {
+        td,
+        th {
+            line-height: 1;
+            padding: 18px 8px;
+            border-bottom-width: 1px;
+            font-size: 14px;
+        }
+    }
+}
+
+.pager {
+    li a {
+        background: #FFFFFF;
+        border-radius: 0px 2px 2px 0px;
+        border: 1px solid #D5D5D5;
+        padding: 0 15px;
+        min-width: 36px;
+        height: 36px;
+        line-height: 36px;
+        &:hover {
+            background: #1361F0;
+            color: #fff;
+            border: 1px solid #1361F0;
+        }
+    }
+}
+
+.media {
+    .media-left {
+        position: relative;
+        &.media-left-login {
+            padding-right: 48px;
+        }
+    }
+}
+
+.platformList {
+    margin: 0 50px;
+    .platformList-item {
+        margin: 0 10px;
+        display: inline-block;
+        width: 31.2%;
+        margin-bottom: 15px;
+        .btn-default {
+            color: #1361F0;
+            border: 1px solid #1361F0;
+            font-size: 13px;
+            &:hover,
+            &:focus {
+                background: #1361F0;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.panel-default {
+    border-color: #E8E8F6;
+    cursor: pointer;
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+    }
+    .panel-footer {
+        height: inherit;
+        overflow: hidden;
+        line-height: 32px;
+        background: #F8F8FC;
+        border: none;
+    }
 }
 
 // public
-a {
+.container {
+    padding: 0;
+    .breadcrumb {
+        background: none;
+        // box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+        // border-radius: 0px;
+        padding: 0;
+        font-size: 16px;
+    }
+    &-body {
+        background: #Fff;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+        border-radius: 4px;
+        margin-bottom: 60px;
+        padding-bottom: 25px;
+    }
+    .row {
+        padding: 0;
+        margin: 0;
+    }
+    .tabs {
+        height: inherit;
+        overflow: hidden;
+        border-bottom: 1px solid #F8F8F8;
+        margin-bottom: 64px;
+        .tabs-item {
+            height: 64px;
+            line-height: 64px;
+            display: inline-block;
+            font-size: 16px;
+            margin-left: 60px;
+            cursor: pointer;
+            &.no-active {
+                cursor: default;
+                &:hover {
+                    border: none;
+                    color: none;
+                }
+            }
+            &:hover,
+            &.active {
+                border-bottom: 2px solid #4F8DFF;
+                a {
+                    color: #4F8DFF;
+                }
+            }
+            a {
+                color: #252631;
+                // border-bottom: 2px solid #fff;
+            }
+        }
+    }
+}
+
+a,
+a:hover {
     text-decoration: none;
+    color: #4F8DFF;
 }
 
 ul,
@@ -25,6 +168,11 @@ li {
     padding-top: 60px;
     .badge {
         vertical-align: text-top;
+        background: #F9204A;
+        color: #fff;
+        position: relative;
+        right: 12px;
+        top: -10px;
     }
     .header-content {
         position: fixed;
@@ -78,9 +226,14 @@ li {
             }
         }
         .dropdown-menu {
+            left: auto!important;
+            right: -8px;
             >li a {
                 line-height: 32px;
             }
+        }
+        .dropdown-toggle {
+            padding: 0!important;
         }
         .list-inline {
             >li {
@@ -88,6 +241,7 @@ li {
                 margin-left: 40px;
                 color: #D8D8D8;
                 font-size: 16px;
+                padding-right: 0!important;
             }
         }
     }

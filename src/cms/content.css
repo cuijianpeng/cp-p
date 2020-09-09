@@ -1,15 +1,147 @@
 body {
   margin: 0;
   padding: 0;
+  background: #F8F8FC;
 }
 
-.platformList .list-inline li .platformList-item {
-  width: 320px;
+.text-success {
+  color: #06B365;
+}
+
+.text-muted {
+  color: #B6BABE;
+}
+
+.btn-default {
+  background: #fff;
+}
+.btn-default:hover {
+  background: #1361F0;
+  color: #fff;
+  border: 1px solid #1361F0;
+}
+
+.taskList {
+  margin: 0 60px;
+}
+.taskList .table td,
+.taskList .table th {
+  line-height: 1;
+  padding: 18px 8px;
+  border-bottom-width: 1px;
+  font-size: 14px;
+}
+
+.pager li a {
+  background: #FFFFFF;
+  border-radius: 0px 2px 2px 0px;
+  border: 1px solid #D5D5D5;
+  padding: 0 15px;
+  min-width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
+.pager li a:hover {
+  background: #1361F0;
+  color: #fff;
+  border: 1px solid #1361F0;
+}
+
+.media .media-left {
+  position: relative;
+}
+.media .media-left.media-left-login {
+  padding-right: 48px;
+}
+
+.platformList {
+  margin: 0 50px;
+}
+.platformList .platformList-item {
+  margin: 0 10px;
+  display: inline-block;
+  width: 31.2%;
   margin-bottom: 15px;
 }
+.platformList .platformList-item .btn-default {
+  color: #1361F0;
+  border: 1px solid #1361F0;
+  font-size: 13px;
+}
+.platformList .platformList-item .btn-default:hover, .platformList .platformList-item .btn-default:focus {
+  background: #1361F0;
+  color: #fff;
+}
 
-a {
+.panel-default {
+  border-color: #E8E8F6;
+  cursor: pointer;
+}
+.panel-default:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+}
+.panel-default .panel-footer {
+  height: inherit;
+  overflow: hidden;
+  line-height: 32px;
+  background: #F8F8FC;
+  border: none;
+}
+
+.container {
+  padding: 0;
+}
+.container .breadcrumb {
+  background: none;
+  padding: 0;
+  font-size: 16px;
+}
+.container-body {
+  background: #Fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  border-radius: 4px;
+  margin-bottom: 60px;
+  padding-bottom: 25px;
+}
+.container .row {
+  padding: 0;
+  margin: 0;
+}
+.container .tabs {
+  height: inherit;
+  overflow: hidden;
+  border-bottom: 1px solid #F8F8F8;
+  margin-bottom: 64px;
+}
+.container .tabs .tabs-item {
+  height: 64px;
+  line-height: 64px;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 60px;
+  cursor: pointer;
+}
+.container .tabs .tabs-item.no-active {
+  cursor: default;
+}
+.container .tabs .tabs-item.no-active:hover {
+  border: none;
+  color: none;
+}
+.container .tabs .tabs-item:hover, .container .tabs .tabs-item.active {
+  border-bottom: 2px solid #4F8DFF;
+}
+.container .tabs .tabs-item:hover a, .container .tabs .tabs-item.active a {
+  color: #4F8DFF;
+}
+.container .tabs .tabs-item a {
+  color: #252631;
+}
+
+a,
+a:hover {
   text-decoration: none;
+  color: #4F8DFF;
 }
 
 ul,
@@ -24,6 +156,11 @@ li {
 }
 .header-wrapper .badge {
   vertical-align: text-top;
+  background: #F9204A;
+  color: #fff;
+  position: relative;
+  right: 12px;
+  top: -10px;
 }
 .header-wrapper .header-content {
   position: fixed;
@@ -74,14 +211,22 @@ li {
   bottom: 12px;
   border-radius: 1px;
 }
+.header-wrapper .header-content .dropdown-menu {
+  left: auto !important;
+  right: -8px;
+}
 .header-wrapper .header-content .dropdown-menu > li a {
   line-height: 32px;
+}
+.header-wrapper .header-content .dropdown-toggle {
+  padding: 0 !important;
 }
 .header-wrapper .header-content .list-inline > li {
   display: inline-block;
   margin-left: 40px;
   color: #D8D8D8;
   font-size: 16px;
+  padding-right: 0 !important;
 }
 
 /*# sourceMappingURL=content.css.map */
