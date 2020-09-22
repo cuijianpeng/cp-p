@@ -157,11 +157,46 @@ li {
 .header-wrapper.header-wrapper-white {
   padding-top: 0;
 }
+.header-wrapper.header-wrapper-white .header-content-dropdown {
+  width: 640px;
+  margin-left: 298px;
+  position: fixed;
+  z-index: 999;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .container,
+.header-wrapper.header-wrapper-white .header-content-dropdown .row {
+  width: 100%;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .list-inline {
+  height: inherit;
+  overflow: hidden;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .list-inline > li {
+  width: 20%;
+  padding: 0;
+  float: left;
+  margin: 0;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .list-inline > li > div {
+  margin: 48px 0 48px 48px;
+  font-size: 14px;
+  line-height: 2;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .list-inline > li > div > div {
+  font-size: 16px;
+  color: #333;
+}
+.header-wrapper.header-wrapper-white .header-content-dropdown .list-inline > li > div ul a {
+  color: #888;
+}
 .header-wrapper.header-wrapper-white .header-content {
   background: none;
   position: inherit;
 }
 .header-wrapper.header-wrapper-white .header-content-right {
+  color: #fff;
+}
+.header-wrapper.header-wrapper-white .header-content-right a {
   color: #fff;
 }
 .header-wrapper.header-wrapper-white .header-content-right .list-inline li {
@@ -268,6 +303,32 @@ li {
   color: #D8D8D8;
   font-size: 16px;
   padding-right: 0 !important;
+}
+.header-wrapper .header-content-dropdown {
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  display: none;
+}
+.header-wrapper .header-content-dropdown .list-inline {
+  height: inherit;
+  overflow: hidden;
+}
+.header-wrapper .header-content-dropdown .list-inline > li {
+  width: 20%;
+  padding: 0;
+  float: left;
+}
+.header-wrapper .header-content-dropdown .list-inline > li > div {
+  margin: 48px 0 48px 48px;
+  font-size: 14px;
+  line-height: 2;
+}
+.header-wrapper .header-content-dropdown .list-inline > li > div > div {
+  font-size: 16px;
+  color: #333;
+}
+.header-wrapper .header-content-dropdown .list-inline > li > div ul a {
+  color: #888;
 }
 
 .bannerBox {

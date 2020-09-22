@@ -10,6 +10,7 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="content.css">
+    <script src="content.js"></script>
 </head>
 
 <body>
@@ -17,56 +18,97 @@
     <div class="bannerBox">
         <div class="header-wrapper header-wrapper-white">
             <div class="header-content">
-                <div class="header-content-right" style="float: right; margin-right: 20px;">
-                    <ul class="list-inline">
-                        <li>
-                            <span>
-                              通知中心
-                              <span class="badge">4</span>
-                            </span>
+                <div>
+                    <div class="header-content-right" style="float: right; margin-right: 20px;">
+                        <ul class="list-inline">
+                            <li>
+                                <span>
+                                  通知中心
+                                  <span class="badge">4</span>
+                                </span>
+                            </li>
+                            <li>帮助中心</li>
+                            <li><a href="javascript:void(0)" onclick="$('#myModal').modal('show')" javascript:void(0)>登录</a></li>
+                            <li>
+                                <div class="dropdown">
+                                    <img src="./images/icon-wx.png" style="width: 24px;" class="img-circle">
+                                    <a href="javascript:void(0)" style="font-size: 16px; text-decoration: none;" class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                         李晓明
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#">帐户信息</a></li>
+                                        <li><a href="#">登出</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="list-inline nav">
+                        <li class="nav-item logo">
+                            <div></div>
                         </li>
-                        <li>帮助中心</li>
-                        <li>
-                            <div class="dropdown">
-                                <img src="./images/icon-wx.png" style="width: 24px;" class="img-circle">
-                                <a href="javascript:void(0)" style="font-size: 16px; text-decoration: none;" class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                     李晓明
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">帐户信息</a></li>
-                                    <li><a href="#">登出</a></li>
-                                </ul>
-                            </div>
+                        <li class="nav-item">
+                            <a target="_blank" href="http://45.63.123.94/backend/moodle/login">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a target="_blank" href="http://45.63.123.94/backend/moodle/mainPage" class="active">任务中心</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="hasSubMenu">实用工具</a>
+                        </li>
+                        <li class="nav-item">
+                            <a target="_blank" href="http://45.63.123.94/backend/moodle/login">实训记录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a target="_blank" href="http://45.63.123.94/backend/moodle/login">课程平台</a>
                         </li>
                     </ul>
                 </div>
-                <ul class="list-inline nav">
-                    <li class="nav-item logo">
-                        <div></div>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)" class="active">任务中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">实用工具</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">素材中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">发文记录</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">新媒体帐号管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)">课程平台</a>
-                    </li>
-                </ul>
+                <div class="header-content-dropdown">
+                    <div class="container">
+                        <div class="row">
+                            <ul class="list-inline">
+                                <li>
+                                    <div>
+                                        <div>热点趋势</div>
+                                        <ul>
+                                            <li><a target="_blank" href="https://tophub.today/">今日热榜</a></li>
+                                            <li><a target="_blank" href="http://index.baidu.com/v2/index.html#/">百度指数</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <div>排版工具</div>
+                                        <ul>
+                                            <li><a target="_blank" href="https://www.135editor.com/">135编辑器</a></li>
+                                            <li><a target="_blank" href="https://xiumi.us/#/">秀米</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <div>在线做图</div>
+                                        <ul>
+                                            <li><a target="_blank" href="https://www.chuangkit.com/?dontjump=1">创客贴</a></li>
+                                            <li><a target="_blank" href="https://www.canva.cn/zh_cn/">canva</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <div>数据分析</div>
+                                        <ul>
+                                            <li><a target="_blank" href="https://www.newrank.cn/">新榜</a></li>
+                                            <li><a target="_blank" href="https://www.feigua.cn/?chl=baidu-dy">飞瓜数据</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -233,5 +275,4 @@
 </html>
 
 <script type="text/javascript">
-    $('#myModal').modal('show')
 </script>
