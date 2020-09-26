@@ -17,7 +17,7 @@
   },
   "content_scripts": [{
       "matches": ["https://mp.weixin.qq.com/*", "http://45.63.123.94/*"],
-      "js": ["content.js"],
+      "js": ["jquery.js","content.js"],
       "run_at": "document_start"
     },
     {
