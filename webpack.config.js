@@ -14,6 +14,7 @@ const config = {
     mode: process.env.NODE_ENV,
     context: __dirname + '/src',
     entry: {
+        'jquery': './jquery.min.js',
         'background': './background.js',
         'content': './content.js',
         'popup/popup': './popup/popup.js',
