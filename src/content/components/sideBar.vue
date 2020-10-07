@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>任务讲解</span>
-        <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-close" @click="dialogClose"></el-button>
+        <!-- <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-close" @click="dialogClose"></el-button> -->
       </div>
       <div class="sidebar-content">
           <div v-html="formatHtml(sideBarData.detail)"></div>

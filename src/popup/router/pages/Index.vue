@@ -1,68 +1,53 @@
 <template>
   <div class="boxIndex">
-    <el-alert
-      title="您的插件不最新版本"
-      type="warning"
-      v-if="versionInfo.need_update"
-      @close="closeEvtClickHandler"
-      close-text="立即更新">
-    </el-alert>
+    
     <div v-if="cmsCookies['mtk']">
-      <div style="margin: 12px;" v-if="Object.keys(userInfo).length">
-        <div style="margin-bottom: 48px;">
-          <el-row>
-            <el-col :span="20">
-              <div style="font-size: 12px; color: #333; padding-bottom: 8px;">当前帐号信息</div>
-            </el-col>
-            <el-col :span="4">
-              <div style="text-align: right; font-size: 12px; color: #333;">
-                
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4">
-              <div class="block"><el-avatar :size="50"></el-avatar></div>
-            </el-col>
-            <el-col :span="16">
-              <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
-                <div>新希望职业教育学院</div>
-                <div>学员：{{userInfo.username}}</div>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="text-align: right;">
-                <span style="font-size: 24px; line-height: 48px;" class="el-icon-arrow-right"></span>
-              </div>
-            </el-col>
-          </el-row>
+      <div v-if="Object.keys(userInfo).length">
+        <div :style="{'height': '120px', 'background-size': '100% 100%','background': 'url(' + bg + ')', 'padding': '0 16px 0'}">
+          <div style="padding-top:36px; color: #fff;">
+            <el-row>
+              <el-col :span="4">
+                <div class="block"><el-avatar :size="50"></el-avatar></div>
+              </el-col>
+              <el-col :span="16">
+                <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
+                  <div style="font-size: 15px;">新希望职业教育学院</div>
+                  <div style="font-size: 12px;">学员：{{userInfo.username}}</div>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <div style="text-align: right;">
+                  <span style="font-size: 24px; line-height: 48px;" class="el-icon-arrow-right"></span>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          
         </div>
-        <div style="margin-bottom: 8px;">
+        <div style="margin-bottom: 12px; border-bottom: 1px solid #EDEDED; line-height: 32px; background: #fff; color: #C0C4CC; padding: 0 16px; display: blcok;">
           <el-row>
             <el-col :span="20">
               <div style="font-size: 12px; color: #333;">已绑定的新媒体号</div>
             </el-col>
             <el-col :span="4">
               <div style="text-align: right; font-size: 12px; color: #333;">
-                管理
+                <a href="http://45.63.123.94/backend/moodle/mainPage" target="_blank">管理</a>
               </div>
             </el-col>
           </el-row>
         </div>
-        <div style="padding-bottom: 12px;" v-for="(item,index) in accountList" :key="index">
+        <div style="margin-bottom: 12px; padding: 0 16px;" v-for="(item,index) in accountList" :key="index">
           <el-row>
-            <el-col :span="4">
-              <div class="block"><el-avatar :size="50"></el-avatar></div>
+            <el-col :span="8">
+              <div class="block">
+                <el-avatar :size="50" :src="icon_wx" v-if="/https:\/\/mp\.weixin\.qq\.com/gi.test(item.fromHost)"></el-avatar>
+                <el-avatar :size="50" style="margin-left: -25px;" :src="item.fromHostAvatar"></el-avatar>
+                </div>
             </el-col>
             <el-col :span="16">
               <div style="margin-left: 12px; font-size: 14px; line-height: 1.8;">
-                <div>{{item.hostName}}</div>
-                <div>学员：{{item.fromHostNick}}</div>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="text-align: right;">
-                <span style="font-size: 24px; line-height: 48px;" class="el-icon-check"></span>
+                <div style="font-size: 15px; color: #333;">{{item.fromHostNick}}</div>
+                <div style="font-size: 12px; color: #bfbfbf">ID:{{item.fromHostKey}}</div>
               </div>
             </el-col>
           </el-row>
@@ -72,25 +57,45 @@
         <el-row>
           <el-col :span="24">
             <div style="text-align: center; padding-bottom: 12px;">
-              <div style="margin: 24px; color: #333;">您的微信账号尚未绑定实训平台</div>
-              <el-button type="primary" plain @click="bindEvtClickHandler">立即绑定</el-button>
+              <div style="margin-top: 80px; margin-bottom: 18px;">
+                <img :src="empty" alt="">
+              </div>
+              <div style="font-size: 14px; color: #C0C4CC; margin-bottom: 16px;">您的微信账号尚未绑定实训平台</div>
+              <el-button style="color: #fff; margin-bottom: 64px; width: 220px; height: 48px; background-color: #1361f0;" type="primary" plain @click="bindEvtClickHandler">立即绑定</el-button>
             </div>
           </el-col>
         </el-row>
       </div>
     </div>
     <div style="text-align: center;" v-else>
-      <div style="padding-bottom: 12px;">
-        <div style="margin: 24px; font-size: 14px; color: #333;">新媒体实训平台简介</div>
-        <el-button type="primary" plain @click="loginEvtClickHandler">立即登陆</el-button>
+      <div>
+        <div style="margin-top: 80px; margin-bottom: 64px;">
+          <img :src="logo" alt="">
+        </div>
+        <div style="font-size: 14px; color: #C0C4CC; margin-bottom: 16px;">您还没有登录，请先登录再进行操作</div>
+        <el-button style="margin-bottom: 64px; width: 220px; height: 48px; background-color: #1361f0;" type="primary" @click="loginEvtClickHandler">立即登陆</el-button>
       </div>
     </div>
-    
+    <div>
+      <div style="line-height: 40px; background: #fdf6ec; color: #C0C4CC; text-align: center;" v-if="versionInfo.need_update">
+        您的插件不最新版本,
+        <a href="javascript:void(0)" @click="closeEvtClickHandler" style="">立即更新</a>
+      </div>
+      <div style="border-top: 1px solid #EDEDED; line-height: 40px; background: #fff; color: #C0C4CC; padding: 0 16px; display: blcok;" v-else>
+        <span style="float: right;">当前版本号: {{version}}</span>
+        <a href="javascript:void(0)">帮助</a>
+      </div>
+    </div>
   </div>
   
 </template>
 
 <script>
+import icon_tt from './../../images/icon-tt.png'
+import icon_wx from './../../images/icon-wx.png'
+import empty from './../../images/icon-empty.png'
+import bg from './../../images/bg.png'
+import logo from './../../images/icon-logo.png'
 import {baseUrl} from './../../../content/request.js'
 import {sendRequest,searchParse,getCookie} from "./../../../content/utils.js"
 
@@ -98,7 +103,13 @@ var defaultThis;
 export default {
   data() {
     return {
+      icon_wx,
+      icon_tt,
+      empty,
+      bg,
+      logo,
       // start
+      version: '1.0.0',
       cmsCookies:{},
       fromHostCookies:{},
       headers:{
@@ -113,7 +124,8 @@ export default {
       },
       userInfo:{},
       accountList: [],
-      versionInfo:{}
+      versionInfo:{
+      }
     };
   },
   created(){
@@ -129,7 +141,7 @@ export default {
   methods: {
     checkVersion(){
       var that = this,
-        _version = '0.0.1';
+        _version = this.version;
       sendRequest({
         type: 'api',
         info: {
@@ -267,5 +279,9 @@ export default {
 .boxIndex{
   font-size: 14px;
   width: 320px;;
+}
+a{
+  text-decoration: none;
+  color: #1361f0;
 }
 </style>

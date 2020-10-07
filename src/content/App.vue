@@ -371,6 +371,7 @@ export default {
         }
 
         that.swiper.slideTo(that.sideBarDataIndex);
+        that.visibleStatus.sidebar = !!1
       });
 
     },
@@ -407,7 +408,7 @@ export default {
 
           if (/^0$/gi.test(res.code)) {
             that.getTaskList();
-            that.sideBarCloseHandler();
+            // that.sideBarCloseHandler();
             // that.$alert("完成任务", "消息", {
             //   confirmButtonText: "确定",
             //   callback: action => {}
