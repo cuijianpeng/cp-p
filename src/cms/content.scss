@@ -231,7 +231,9 @@ li {
                     a {
                         color: #999999;
                         &:hover,
-                        &.active {
+                        &.active,
+                        &:focus {
+                            outline: none;
                             color: #252631;
                         }
                     }
@@ -291,7 +293,9 @@ li {
                     display: block;
                     padding: 0!important;
                     &:hover,
-                    &.active {
+                    &.active,
+                    &:focus {
+                        outline: none;
                         font-size: 16px;
                         color: #4F8DFF;
                         position: relative;

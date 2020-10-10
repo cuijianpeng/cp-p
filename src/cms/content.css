@@ -213,7 +213,8 @@ li {
 .header-wrapper.header-wrapper-white .header-content .nav .nav-item a {
   color: #999999;
 }
-.header-wrapper.header-wrapper-white .header-content .nav .nav-item a:hover, .header-wrapper.header-wrapper-white .header-content .nav .nav-item a.active {
+.header-wrapper.header-wrapper-white .header-content .nav .nav-item a:hover, .header-wrapper.header-wrapper-white .header-content .nav .nav-item a.active, .header-wrapper.header-wrapper-white .header-content .nav .nav-item a:focus {
+  outline: none;
   color: #252631;
 }
 .header-wrapper .badge {
@@ -269,13 +270,14 @@ li {
   display: block;
   padding: 0 !important;
 }
-.header-wrapper .header-content .nav .nav-item a:hover, .header-wrapper .header-content .nav .nav-item a.active {
+.header-wrapper .header-content .nav .nav-item a:hover, .header-wrapper .header-content .nav .nav-item a.active, .header-wrapper .header-content .nav .nav-item a:focus {
+  outline: none;
   font-size: 16px;
   color: #4F8DFF;
   position: relative;
   background: none;
 }
-.header-wrapper .header-content .nav .nav-item a:hover::after, .header-wrapper .header-content .nav .nav-item a.active::after {
+.header-wrapper .header-content .nav .nav-item a:hover::after, .header-wrapper .header-content .nav .nav-item a.active::after, .header-wrapper .header-content .nav .nav-item a:focus::after {
   content: "";
   display: inline-block;
   width: 2em;
