@@ -140,23 +140,34 @@ export default {
     SwiperSlide
   },
   methods: {
+    formatUrl(v){
+      var _urls, _search;
+
+      _urls = v.split('?');
+      if (_urls.length > 1) {
+        _search = _urls[1];
+        _urls[1] = _search.split('&').sort().join('&')
+      }
+      return _urls.join('?');
+    },
     diffUrl(v){
-      var _href,
+      var that = this,
+        _href,
         _reg,
         _regString,
         _regStringArray = [];
 
       // 精准匹配
       if (/^2$/gi.test(v.url_match_mode)) {
-        _href = encodeURIComponent(window.location.href);
-        _regString = '^' + encodeURIComponent(v.url[0]) + '$'
+        _href = encodeURIComponent(that.formatUrl(window.location.href));
+        _regString = '^' + encodeURIComponent(that.formatUrl(v.url[0])) + '$'
       }else{
         // 模糊匹配
         v.url.forEach(function(v,i){
-          _regStringArray.push(encodeURIComponent(v.split('?')[0]))
+          _regStringArray.push(encodeURIComponent(that.formatUrl(v)))
         })
-        _href = encodeURIComponent(window.location.href.split('?')[0]);
-        _regString = '^(' + _regStringArray.join('|') + ')'
+        _href = encodeURIComponent(that.formatUrl(window.location.href));
+        _regString = '^(' + _regStringArray.join('|') + ')$'
       }
 
       _reg = new RegExp(_regString, 'gi')
@@ -343,15 +354,15 @@ export default {
 
           // 精准匹配
           if (/^2$/gi.test(v.url_match_mode)) {
-            _href = encodeURIComponent(window.location.href);
-            _regString = '^' + encodeURIComponent(v.url[0]) + '$'
+            _href = encodeURIComponent(that.formatUrl(window.location.href));
+            _regString = '^' + encodeURIComponent(that.formatUrl(v.url[0])) + '$'
           }else{
             // 模糊匹配
             v.url.forEach(function(v,i){
-              _regStringArray.push(encodeURIComponent(v.split('?')[0]))
+              _regStringArray.push(encodeURIComponent(that.formatUrl(v)))
             })
-            _href = encodeURIComponent(window.location.href.split('?')[0]);
-            _regString = '^(' + _regStringArray.join('|') + ')'
+            _href = encodeURIComponent(that.formatUrl(window.location.href));
+            _regString = '^(' + _regStringArray.join('|') + ')$'
           }
 
           _reg = new RegExp(_regString, 'gi')
